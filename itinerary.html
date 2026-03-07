@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav's Trip Itinerary — Mar-Apr 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#e0e0e0}
+.hero{position:relative;height:70vh;min-height:400px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.35)}
+.hero-content{position:relative;z-index:2;padding:20px}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;letter-spacing:-1px}
+.hero p{font-size:1.2rem;color:rgba(255,255,255,.7);margin-top:12px}
+.hero .dates{display:flex;gap:16px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.hero .dates span{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 18px;border-radius:40px;font-size:.85rem;color:#fff;font-weight:500}
+nav.sticky{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);padding:12px 0;overflow-x:auto;white-space:nowrap;text-align:center}
+nav.sticky a{display:inline-block;padding:8px 18px;margin:0 4px;border-radius:20px;text-decoration:none;color:#aaa;font-size:.82rem;font-weight:600;transition:.2s}
+nav.sticky a:hover{color:#fff;background:rgba(255,255,255,.1)}
+.country-section{padding:60px 0 40px}
+.country-header{text-align:center;padding:0 20px 40px}
+.country-header h2{font-size:2.4rem;font-weight:800;margin-bottom:6px}
+.country-header p{color:#888;font-size:1rem}
+.country-flag{font-size:3rem;margin-bottom:8px}
+.day-block{max-width:1100px;margin:0 auto 60px;padding:0 20px}
+.day-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.day-title .date-badge{background:#222;padding:6px 14px;border-radius:8px;font-size:.8rem;color:#aaa;font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.card{border-radius:16px;overflow:hidden;background:#151515;border:1px solid rgba(255,255,255,.06);transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.card-img{width:100%;height:220px;object-fit:cover;display:block;background:#222}
+.card-body{padding:18px 20px 22px}
+.card-body h3{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:4px}
+.card-body .type-badge{display:inline-block;font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+.card-body p{color:#999;font-size:.88rem;line-height:1.5}
+.badge-landmark{background:#e74c3c22;color:#e74c3c}
+.badge-temple{background:#f39c1222;color:#f39c12}
+.badge-nightlife{background:#9b59b622;color:#9b59b6}
+.badge-beach{background:#1abc9c22;color:#1abc9c}
+.badge-viewpoint{background:#3498db22;color:#3498db}
+.badge-nature{background:#27ae6022;color:#27ae60}
+.badge-market{background:#e67e2222;color:#e67e22}
+.badge-museum{background:#8e44ad22;color:#8e44ad}
+.badge-park{background:#2ecc7122;color:#2ecc71}
+.badge-architecture{background:#95a5a622;color:#95a5a6}
+.badge-transport{background:#1abc9c22;color:#1abc9c}
+.badge-neighborhood{background:#d3545422;color:#d35454}
+.badge-historic{background:#d3545422;color:#d35454}
+.badge-town{background:#7f8c8d22;color:#7f8c8d}
+.badge-island{background:#00b89422;color:#00b894}
+.badge-adventure{background:#fd796322;color:#fd7963}
+footer{text-align:center;padding:60px 20px;color:#555;font-size:.85rem;border-top:1px solid rgba(255,255,255,.05)}
+footer a{color:#3498db;text-decoration:none}
+@media(max-width:600px){.cards{grid-template-columns:1fr}.hero{height:50vh}}
+</style>
+</head>
+<body>
+<div class="hero">
+<img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80" alt="Travel">
+<div class="hero-content">
+<h1>🌏 The Grand Tour</h1>
+<p>Berlin → Prague → Hong Kong → Vietnam → Thailand</p>
+<div class="dates">
+<span>📅 Mar 12 – Apr 20, 2026</span>
+<span>📍 5 Countries</span>
+<span>🗓️ 40 Days</span>
+<span>📌 53 Places</span>
+</div>
+</div>
+</div>
+<nav class="sticky">
+<a href="#germany">🇩🇪 Germany</a>
+<a href="#czech">🇨🇿 Czech Republic</a>
+<a href="#hongkong">🇭🇰 Hong Kong</a>
+<a href="#vietnam">🇻🇳 Vietnam</a>
+<a href="#thailand">🇹🇭 Thailand</a>
+<a href="index.html">📍 Map</a>
+</nav>
+
+<section class="country-section" id="germany">
+<div class="country-header"><div class="country-flag">🇩🇪</div><h2>Germany</h2><p>Berlin · Mar 12–14</p></div>
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 12</span> Arrival in Berlin</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1599946347371-68eb71b16afc?w=640&q=80" alt="Brandenburg Gate" loading="lazy"><div class="card-body"><h3>⭐ Brandenburg Gate</h3><span class="type-badge badge-landmark">Landmark</span><p>Berlin's most iconic symbol — an 18th-century neoclassical arch that once divided East and West. Best at golden hour.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=640&q=80" alt="Reichstag" loading="lazy"><div class="card-body"><h3>⭐ Reichstag Building</h3><span class="type-badge badge-landmark">Landmark</span><p>Germany's parliament with Norman Foster's famous glass dome. Book a free rooftop visit for 360° views of the city.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 13</span> History & Culture</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1560968788-79ee6a5d0b8e?w=640&q=80" alt="East Side Gallery" loading="lazy"><div class="card-body"><h3>🎨 East Side Gallery</h3><span class="type-badge badge-landmark">Landmark</span><p>1.3km of the Berlin Wall covered in murals and street art. The world's longest open-air gallery — powerful and photogenic.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1587330979470-3595ac045ab0?w=640&q=80" alt="Museum Island" loading="lazy"><div class="card-body"><h3>🏛️ Museum Island</h3><span class="type-badge badge-museum">Museum Complex</span><p>UNESCO World Heritage site with 5 world-class museums on one island. Don't miss the Pergamon Museum and Nefertiti bust.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 14</span> Local Vibes</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1573599852326-2d4da0abb474?w=640&q=80" alt="Tempelhofer Feld" loading="lazy"><div class="card-body"><h3>🌳 Tempelhofer Feld</h3><span class="type-badge badge-park">Park</span><p>A former airport turned into Berlin's coolest park. Massive open runways where locals bike, skate, kite, and BBQ.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1545128485-c400e7702712?w=640&q=80" alt="Berghain" loading="lazy"><div class="card-body"><h3>🎉 Berghain</h3><span class="type-badge badge-nightlife">Nightlife</span><p>The world's most famous techno club in a brutalist power plant. No phones inside. Getting past the bouncer is the real challenge.</p></div></div>
+</div></div>
+</section>
+
+<section class="country-section" id="czech">
+<div class="country-header"><div class="country-flag">🇨🇿</div><h2>Czech Republic</h2><p>Prague · Mar 15–17</p></div>
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 15</span> Prague Classics</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1541849546-216549ae216d?w=640&q=80" alt="Charles Bridge" loading="lazy"><div class="card-body"><h3>⭐ Charles Bridge</h3><span class="type-badge badge-landmark">Landmark</span><p>14th-century Gothic bridge lined with 30 baroque statues. Go at sunrise to avoid the crowds and catch magical light.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1592906209472-a36b1f3782ef?w=640&q=80" alt="Prague Castle" loading="lazy"><div class="card-body"><h3>🏰 Prague Castle</h3><span class="type-badge badge-landmark">Landmark</span><p>The largest ancient castle complex in the world. St. Vitus Cathedral inside is jaw-dropping. Worth half a day.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 16</span> Old & New</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1458150945447-7fb764c11a92?w=640&q=80" alt="Old Town Square" loading="lazy"><div class="card-body"><h3>⭐ Old Town Square</h3><span class="type-badge badge-landmark">Landmark</span><p>Heart of Prague with the famous astronomical clock. Watch it strike the hour — touristy but worth seeing once.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1574424820498-d32e5cf3e055?w=640&q=80" alt="Dancing House" loading="lazy"><div class="card-body"><h3>🏗️ Dancing House</h3><span class="type-badge badge-architecture">Architecture</span><p>Deconstructivist building by Frank Gehry — looks like two people dancing. Rooftop bar has great views of Prague.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 17</span> Night Out</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=640&q=80" alt="Karlovy Lazne" loading="lazy"><div class="card-body"><h3>🎉 Karlovy Lazne</h3><span class="type-badge badge-nightlife">Nightlife</span><p>5-story nightclub right next to Charles Bridge. Each floor is a different genre. Massive and wild — classic Prague night out.</p></div></div>
+</div></div>
+</section>
+
+<section class="country-section" id="hongkong">
+<div class="country-header"><div class="country-flag">🇭🇰</div><h2>Hong Kong</h2><p>Mar 22–23</p></div>
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 22</span> Skyline Day</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1536599018102-9f803c979981?w=640&q=80" alt="Victoria Peak" loading="lazy"><div class="card-body"><h3>👁️ Victoria Peak</h3><span class="type-badge badge-viewpoint">Viewpoint</span><p>The best skyline view in the world. Take the Peak Tram up and hit the Sky Terrace at sunset. Absolutely unreal.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1506970845246-18f21d533b20?w=640&q=80" alt="Victoria Harbour" loading="lazy"><div class="card-body"><h3>⭐ Victoria Harbour</h3><span class="type-badge badge-landmark">Landmark</span><p>Iconic waterfront between HK Island and Kowloon. Symphony of Lights laser show runs nightly at 8pm.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1563178406-4cdc2923acbc?w=640&q=80" alt="Star Ferry" loading="lazy"><div class="card-body"><h3>⛴️ Star Ferry</h3><span class="type-badge badge-transport">Transport</span><p>Running since 1888. Cheapest and best way to see the harbour — a few HKD for a legendary crossing.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 23</span> Markets & Nightlife</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?w=640&q=80" alt="Mong Kok" loading="lazy"><div class="card-body"><h3>🛒 Mong Kok</h3><span class="type-badge badge-market">Market</span><p>One of the most densely packed places on Earth. Night markets, sneaker shops, street food — pure sensory overload.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1532452119098-a3650b3c46d3?w=640&q=80" alt="Lan Kwai Fong" loading="lazy"><div class="card-body"><h3>🎉 Lan Kwai Fong</h3><span class="type-badge badge-nightlife">Nightlife</span><p>HK's legendary bar and club district. Narrow streets packed with rooftop bars, cocktails, and late-night energy.</p></div></div>
+</div></div>
+</section>
+
+<section class="country-section" id="vietnam">
+<div class="country-header"><div class="country-flag">🇻🇳</div><h2>Vietnam</h2><p>Hanoi · Ha Giang · Ha Long Bay · HCMC · Mar 27 – Apr 3</p></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 27</span> Hanoi Arrival</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=640&q=80" alt="Old Quarter" loading="lazy"><div class="card-body"><h3>🏘️ Old Quarter</h3><span class="type-badge badge-neighborhood">Neighborhood</span><p>Chaotic, beautiful, and alive. Motorbikes everywhere, $1 bia hoi, and the best street food in Southeast Asia.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1609948543911-7375df9c0547?w=640&q=80" alt="Hoan Kiem Lake" loading="lazy"><div class="card-body"><h3>⭐ Hoan Kiem Lake</h3><span class="type-badge badge-landmark">Landmark</span><p>Hanoi's peaceful center. Walk around at dawn with locals doing tai chi. The red bridge to Ngoc Son Temple is iconic.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 28</span> Hanoi Exploring</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=640&q=80" alt="Train Street" loading="lazy"><div class="card-body"><h3>🚂 Train Street</h3><span class="type-badge badge-landmark">Landmark</span><p>A narrow street where a train passes inches from cafés twice a day. Grab an egg coffee and wait for the rumble.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Mar 29 – Apr 1</span> Ha Giang Motorbike Loop 🏍️</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1573790387438-4da905039392?w=640&q=80" alt="Ha Giang" loading="lazy"><div class="card-body"><h3>📍 Ha Giang City</h3><span class="type-badge badge-town">Town</span><p>Starting point for Vietnam's most epic road trip. Rent a bike or hire an easy rider — 3-4 days of pure adventure.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=640&q=80" alt="Heaven Gate" loading="lazy"><div class="card-body"><h3>👁️ Quan Ba Heaven Gate</h3><span class="type-badge badge-viewpoint">Viewpoint</span><p>First major viewpoint on the loop. Mountain pass at 1,500m with views of the Twin Mountains and terraced valleys.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1570366583862-f91883984fde?w=640&q=80" alt="Dong Van" loading="lazy"><div class="card-body"><h3>📍 Dong Van</h3><span class="type-badge badge-town">Town</span><p>Remote karst plateau town in the UNESCO Global Geopark. Sunday market with ethnic minorities is incredible.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=640&q=80" alt="Ma Pi Leng" loading="lazy"><div class="card-body"><h3>👁️ Ma Pi Leng Pass</h3><span class="type-badge badge-viewpoint">Viewpoint</span><p>Vietnam's most famous mountain road. Sheer cliffs, the Nho Que River 800m below. You'll pull over every 5 minutes.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=640&q=80" alt="Meo Vac" loading="lazy"><div class="card-body"><h3>📍 Meo Vac</h3><span class="type-badge badge-town">Town</span><p>Deep in the loop. Sunday market is authentic — Hmong, Dao, and Lo Lo people trading in traditional dress.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 2</span> Ha Long Bay</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1528127269322-539801943592?w=640&q=80" alt="Ha Long Bay" loading="lazy"><div class="card-body"><h3>🌿 Ha Long Bay</h3><span class="type-badge badge-nature">Nature</span><p>1,600 limestone islands rising from emerald water. Overnight cruise is the move — kayaking through caves at sunset.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1573790387438-4da905039392?w=640&q=80" alt="Ti Top Island" loading="lazy"><div class="card-body"><h3>🏝️ Ti Top Island</h3><span class="type-badge badge-island">Island</span><p>Short but steep hike to a panoramic viewpoint over the bay. Beach at the bottom for a swim after.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 3</span> Ho Chi Minh City</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=640&q=80" alt="Ben Thanh" loading="lazy"><div class="card-body"><h3>🛒 Ben Thanh Market</h3><span class="type-badge badge-market">Market</span><p>Saigon's most famous market. Haggle for everything. Night market outside is even better for street food.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1557750255-c76072a7aad1?w=640&q=80" alt="War Remnants Museum" loading="lazy"><div class="card-body"><h3>🏛️ War Remnants Museum</h3><span class="type-badge badge-museum">Museum</span><p>Sobering and essential. Vietnam War from the Vietnamese perspective. Allow 2-3 hours — it stays with you.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=640&q=80" alt="Bui Vien" loading="lazy"><div class="card-body"><h3>🎉 Bui Vien Street</h3><span class="type-badge badge-nightlife">Nightlife</span><p>Saigon's backpacker strip. Cheap drinks, loud music, plastic chairs on the sidewalk. Absolute chaos in the best way.</p></div></div>
+</div></div>
+</section>
+
+<section class="country-section" id="thailand">
+<div class="country-header"><div class="country-flag">🇹🇭</div><h2>Thailand</h2><p>Bangkok · Pattaya · Chiang Mai · Chiang Rai · Koh Phangan · Krabi · Phi Phi · Phuket · Apr 4–20</p></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 4</span> Bangkok Temples</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=640&q=80" alt="Grand Palace" loading="lazy"><div class="card-body"><h3>🛕 Grand Palace</h3><span class="type-badge badge-temple">Temple</span><p>Bangkok's crown jewel. Dazzling gold spires and intricate mosaics. Dress code enforced — cover knees and shoulders.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1551966775-a4ddc8df052b?w=640&q=80" alt="Wat Phra Kaew" loading="lazy"><div class="card-body"><h3>🛕 Wat Phra Kaew</h3><span class="type-badge badge-temple">Temple</span><p>Temple of the Emerald Buddha, inside the Grand Palace grounds. Thailand's most sacred Buddhist temple.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 5</span> Bangkok Continued</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=640&q=80" alt="Wat Arun" loading="lazy"><div class="card-body"><h3>🛕 Wat Arun</h3><span class="type-badge badge-temple">Temple</span><p>Temple of Dawn on the Chao Phraya River. Climb the steep central prang for riverside views. Stunning lit at night.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=640&q=80" alt="Khao San" loading="lazy"><div class="card-body"><h3>🎉 Khao San Road</h3><span class="type-badge badge-nightlife">Nightlife</span><p>The legendary backpacker street. Buckets of cheap cocktails, pad thai, scorpion skewers, and pure madness after dark.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 6</span> Pattaya</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=640&q=80" alt="Skydiving" loading="lazy"><div class="card-body"><h3>🪂 Thai Sky Adventures</h3><span class="type-badge badge-adventure">Adventure</span><p>Tandem skydive over the Thai coast. 13,000 feet, 60 seconds of freefall with ocean views. Bucket list stuff.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 7–8</span> Chiang Mai</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1512553432546-6a8ed0841e71?w=640&q=80" alt="Old City" loading="lazy"><div class="card-body"><h3>🏯 Chiang Mai Old City</h3><span class="type-badge badge-historic">Historic Area</span><p>Walled city packed with temples, cheap massages, and amazing food markets. Sunday walking street is legendary.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=640&q=80" alt="Doi Suthep" loading="lazy"><div class="card-body"><h3>🛕 Doi Suthep</h3><span class="type-badge badge-temple">Temple</span><p>Golden temple on the mountain. 309 steps up (or cable car). Panoramic city views from the top.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 9</span> Chiang Rai Temples</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1553856622-d1b352e24a21?w=640&q=80" alt="White Temple" loading="lazy"><div class="card-body"><h3>🤍 White Temple</h3><span class="type-badge badge-temple">Temple</span><p>Surreal all-white temple from a dream. The bridge of rebirth over a sea of hands is unforgettable.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=640&q=80" alt="Blue Temple" loading="lazy"><div class="card-body"><h3>💙 Blue Temple</h3><span class="type-badge badge-temple">Temple</span><p>Vibrant sapphire blue with intricate carvings. Less crowded than the White Temple — equally stunning for photos.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=640&q=80" alt="Black House" loading="lazy"><div class="card-body"><h3>🖤 Black House</h3><span class="type-badge badge-museum">Museum</span><p>Dark, eerie art complex. Animal skins, skulls, and surreal sculptures. The anti-White Temple.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 10</span> Nature Day</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=640&q=80" alt="Doi Inthanon" loading="lazy"><div class="card-body"><h3>🌿 Doi Inthanon National Park</h3><span class="type-badge badge-nature">Nature</span><p>Thailand's highest peak at 2,565m. Waterfalls, twin pagodas, cloud forest trails. Bring a jacket — it's cool up there.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 11–13</span> Koh Phangan 🌕</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=640&q=80" alt="Haad Rin" loading="lazy"><div class="card-body"><h3>🏖️ Haad Rin Beach</h3><span class="type-badge badge-beach">Beach</span><p>Home of the Full Moon Party. 30,000 people, neon paint, fire shows, bass until sunrise. Legendary.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=640&q=80" alt="Sri Thanu" loading="lazy"><div class="card-body"><h3>🧘 Sri Thanu</h3><span class="type-badge badge-neighborhood">Neighborhood</span><p>The chill side. Yoga studios, vegan cafes, sunset sessions, and digital nomad vibes.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=640&q=80" alt="Eden Garden" loading="lazy"><div class="card-body"><h3>🎉 Eden Garden Party</h3><span class="type-badge badge-nightlife">Nightlife</span><p>Jungle party in the hills. Open-air dancefloor, fairy lights, good house/techno. Magic.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 14–15</span> Krabi</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=640&q=80" alt="Railay" loading="lazy"><div class="card-body"><h3>🏖️ Railay Beach</h3><span class="type-badge badge-beach">Beach</span><p>Only accessible by boat. Towering limestone cliffs, crystal water, rock climbing. Thailand's most beautiful beach.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=640&q=80" alt="Tiger Cave" loading="lazy"><div class="card-body"><h3>🛕 Tiger Cave Temple</h3><span class="type-badge badge-temple">Temple</span><p>1,237 steps to the top. Brutal climb, incredible payoff — 360° views of Krabi from the summit.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 16–17</span> Phi Phi Islands</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1494949360228-4e9bde560065?w=640&q=80" alt="Maya Bay" loading="lazy"><div class="card-body"><h3>🏖️ Maya Bay</h3><span class="type-badge badge-beach">Beach</span><p>Made famous by DiCaprio in "The Beach." Turquoise water in a limestone amphitheater. Now has visitor limits.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=640&q=80" alt="Pileh Lagoon" loading="lazy"><div class="card-body"><h3>🌿 Pileh Lagoon</h3><span class="type-badge badge-nature">Nature</span><p>Enclosed turquoise lagoon surrounded by cliffs. Jump off the boat and float in impossibly clear water.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=640&q=80" alt="Viewpoint" loading="lazy"><div class="card-body"><h3>👁️ Phi Phi Viewpoint</h3><span class="type-badge badge-viewpoint">Viewpoint</span><p>THE postcard shot. Two bays visible from above. 30-min hike — go for sunrise or sunset.</p></div></div>
+</div></div>
+
+<div class="day-block"><div class="day-title"><span class="date-badge">Apr 18–20</span> Phuket — Grand Finale</div><div class="cards">
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=640&q=80" alt="Old Town" loading="lazy"><div class="card-body"><h3>🏯 Phuket Old Town</h3><span class="type-badge badge-historic">Historic Area</span><p>Sino-Portuguese architecture, colorful shophouses, great street art. Way more character than the beach strips.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=640&q=80" alt="Big Buddha" loading="lazy"><div class="card-body"><h3>⭐ Big Buddha Phuket</h3><span class="type-badge badge-landmark">Landmark</span><p>45m white marble Buddha on a hilltop. 360° views of the island. Active construction — monks welcome visitors.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=640&q=80" alt="Patong" loading="lazy"><div class="card-body"><h3>🏖️ Patong Beach</h3><span class="type-badge badge-beach">Beach</span><p>Phuket's party beach. Bangla Road at night is neon-lit madness. Beach by day, clubs by night.</p></div></div>
+<div class="card"><img class="card-img" src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=640&q=80" alt="Promthep Cape" loading="lazy"><div class="card-body"><h3>🌅 Promthep Cape</h3><span class="type-badge badge-viewpoint">Viewpoint</span><p>Phuket's best sunset spot. Southern tip with panoramic ocean views. Perfect way to end the trip.</p></div></div>
+</div></div>
+</section>
+
+<footer>
+<p>🌏 Nav's Grand Tour — Mar 12 to Apr 20, 2026</p>
+<p style="margin-top:8px"><a href="index.html">📍 View Interactive Map</a></p>
+</footer>
+</body>
+</html>
