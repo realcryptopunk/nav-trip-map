@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav's Trip — Mar-Apr 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+#map{height:100vh;width:100%}
+.legend{background:#fff;padding:12px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.25);line-height:1.8;font-size:13px}
+.legend h4{margin-bottom:6px;font-size:14px}
+.legend i{width:14px;height:14px;display:inline-block;border-radius:50%;margin-right:6px;vertical-align:middle}
+.day-label{background:none;border:none;font-weight:700;font-size:11px;color:#333;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+const places = [
+  {date:"Mar 12",country:"Germany",city:"Berlin",name:"Brandenburg Gate",type:"Landmark",notes:"Historic symbol of Berlin",lat:52.5163,lng:13.3777},
+  {date:"Mar 12",country:"Germany",city:"Berlin",name:"Reichstag Building",type:"Landmark",notes:"Glass dome parliament building",lat:52.5186,lng:13.3761},
+  {date:"Mar 13",country:"Germany",city:"Berlin",name:"East Side Gallery",type:"Landmark",notes:"Berlin Wall street art",lat:52.5053,lng:13.4396},
+  {date:"Mar 13",country:"Germany",city:"Berlin",name:"Museum Island",type:"Museum Complex",notes:"UNESCO museum district",lat:52.5169,lng:13.4019},
+  {date:"Mar 14",country:"Germany",city:"Berlin",name:"Tempelhofer Feld",type:"Park",notes:"Old airport turned park",lat:52.4731,lng:13.4017},
+  {date:"Mar 14",country:"Germany",city:"Berlin",name:"Berghain",type:"Nightlife",notes:"Famous techno club",lat:52.5112,lng:13.4431},
+  {date:"Mar 15",country:"Czech Republic",city:"Prague",name:"Charles Bridge",type:"Landmark",notes:"Iconic medieval bridge",lat:50.0865,lng:14.4114},
+  {date:"Mar 15",country:"Czech Republic",city:"Prague",name:"Prague Castle",type:"Landmark",notes:"Largest castle complex in world",lat:50.0911,lng:14.4003},
+  {date:"Mar 16",country:"Czech Republic",city:"Prague",name:"Old Town Square",type:"Landmark",notes:"Astronomical clock area",lat:50.0875,lng:14.4213},
+  {date:"Mar 16",country:"Czech Republic",city:"Prague",name:"Dancing House",type:"Architecture",notes:"Modern architectural building",lat:50.0755,lng:14.4142},
+  {date:"Mar 17",country:"Czech Republic",city:"Prague",name:"Karlovy Lazne",type:"Nightlife",notes:"Large nightclub",lat:50.0862,lng:14.4137},
+  {date:"Mar 22",country:"Hong Kong",city:"Hong Kong",name:"Victoria Peak",type:"Viewpoint",notes:"Best skyline view",lat:22.2759,lng:114.1455},
+  {date:"Mar 22",country:"Hong Kong",city:"Hong Kong",name:"Victoria Harbour",type:"Landmark",notes:"Waterfront skyline",lat:22.2930,lng:114.1694},
+  {date:"Mar 22",country:"Hong Kong",city:"Hong Kong",name:"Star Ferry",type:"Transport",notes:"Historic harbor ferry",lat:22.2934,lng:114.1685},
+  {date:"Mar 23",country:"Hong Kong",city:"Hong Kong",name:"Mong Kok",type:"Market",notes:"Street markets",lat:22.3193,lng:114.1694},
+  {date:"Mar 23",country:"Hong Kong",city:"Hong Kong",name:"Lan Kwai Fong",type:"Nightlife",notes:"Bar district",lat:22.2810,lng:114.1554},
+  {date:"Mar 27",country:"Vietnam",city:"Hanoi",name:"Old Quarter Hanoi",type:"Neighborhood",notes:"Backpacker area",lat:21.0340,lng:105.8500},
+  {date:"Mar 27",country:"Vietnam",city:"Hanoi",name:"Hoan Kiem Lake",type:"Landmark",notes:"Central lake and walking area",lat:21.0288,lng:105.8525},
+  {date:"Mar 28",country:"Vietnam",city:"Hanoi",name:"Hanoi Train Street",type:"Landmark",notes:"Cafe street with train passing",lat:21.0240,lng:105.8430},
+  {date:"Mar 29",country:"Vietnam",city:"Ha Giang",name:"Ha Giang City",type:"Town",notes:"Start of motorbike loop",lat:22.8233,lng:104.9838},
+  {date:"Mar 30",country:"Vietnam",city:"Ha Giang",name:"Quan Ba Heaven Gate",type:"Viewpoint",notes:"Mountain pass viewpoint",lat:23.0837,lng:105.0060},
+  {date:"Mar 30",country:"Vietnam",city:"Ha Giang",name:"Yen Minh",type:"Town",notes:"Ha Giang Loop stop",lat:23.1203,lng:105.1546},
+  {date:"Mar 31",country:"Vietnam",city:"Ha Giang",name:"Dong Van",type:"Town",notes:"Karst plateau town",lat:23.2764,lng:105.3622},
+  {date:"Mar 31",country:"Vietnam",city:"Ha Giang",name:"Ma Pi Leng Pass",type:"Viewpoint",notes:"Famous mountain road",lat:23.2248,lng:105.4078},
+  {date:"Apr 1",country:"Vietnam",city:"Ha Giang",name:"Meo Vac",type:"Town",notes:"Loop village stop",lat:23.1641,lng:105.4033},
+  {date:"Apr 2",country:"Vietnam",city:"Ha Long Bay",name:"Ha Long Bay",type:"Nature",notes:"Boat cruise limestone islands",lat:20.9101,lng:107.1839},
+  {date:"Apr 2",country:"Vietnam",city:"Ha Long Bay",name:"Ti Top Island",type:"Island",notes:"Viewpoint hike",lat:20.9300,lng:107.0900},
+  {date:"Apr 3",country:"Vietnam",city:"Ho Chi Minh City",name:"Ben Thanh Market",type:"Market",notes:"Major city market",lat:10.7725,lng:106.6980},
+  {date:"Apr 3",country:"Vietnam",city:"Ho Chi Minh City",name:"War Remnants Museum",type:"Museum",notes:"Vietnam war history",lat:10.7798,lng:106.6922},
+  {date:"Apr 3",country:"Vietnam",city:"Ho Chi Minh City",name:"Bui Vien Street",type:"Nightlife",notes:"Backpacker street",lat:10.7688,lng:106.6935},
+  {date:"Apr 4",country:"Thailand",city:"Bangkok",name:"Grand Palace",type:"Temple",notes:"Royal palace complex",lat:13.7500,lng:100.4914},
+  {date:"Apr 4",country:"Thailand",city:"Bangkok",name:"Wat Phra Kaew",type:"Temple",notes:"Emerald Buddha temple",lat:13.7516,lng:100.4927},
+  {date:"Apr 5",country:"Thailand",city:"Bangkok",name:"Wat Arun",type:"Temple",notes:"Riverside temple",lat:13.7437,lng:100.4888},
+  {date:"Apr 5",country:"Thailand",city:"Bangkok",name:"Khao San Road",type:"Nightlife",notes:"Backpacker nightlife",lat:13.7588,lng:100.4974},
+  {date:"Apr 6",country:"Thailand",city:"Pattaya",name:"Thai Sky Adventures",type:"Adventure",notes:"Skydiving location",lat:12.8165,lng:100.9227},
+  {date:"Apr 7",country:"Thailand",city:"Chiang Mai",name:"Chiang Mai Old City",type:"Historic Area",notes:"Temple district",lat:18.7883,lng:98.9853},
+  {date:"Apr 8",country:"Thailand",city:"Chiang Mai",name:"Wat Phra That Doi Suthep",type:"Temple",notes:"Mountain temple",lat:18.8048,lng:98.9217},
+  {date:"Apr 9",country:"Thailand",city:"Chiang Rai",name:"White Temple",type:"Temple",notes:"Contemporary art temple",lat:19.8248,lng:99.7632},
+  {date:"Apr 9",country:"Thailand",city:"Chiang Rai",name:"Blue Temple",type:"Temple",notes:"Modern blue temple",lat:19.9127,lng:99.8331},
+  {date:"Apr 9",country:"Thailand",city:"Chiang Rai",name:"Black House",type:"Museum",notes:"Dark art complex",lat:19.8778,lng:99.8414},
+  {date:"Apr 10",country:"Thailand",city:"Chiang Mai",name:"Doi Inthanon National Park",type:"Nature",notes:"Waterfalls and mountains",lat:18.5875,lng:98.4867},
+  {date:"Apr 11",country:"Thailand",city:"Koh Phangan",name:"Haad Rin Beach",type:"Beach",notes:"Full Moon Party location",lat:9.6734,lng:100.0693},
+  {date:"Apr 12",country:"Thailand",city:"Koh Phangan",name:"Sri Thanu",type:"Neighborhood",notes:"Yoga cafes and social area",lat:9.7258,lng:99.9681},
+  {date:"Apr 13",country:"Thailand",city:"Koh Phangan",name:"Eden Garden Party",type:"Nightlife",notes:"Jungle party venue",lat:9.7100,lng:100.0300},
+  {date:"Apr 14",country:"Thailand",city:"Krabi",name:"Railay Beach",type:"Beach",notes:"Limestone cliffs beach",lat:8.0106,lng:98.8378},
+  {date:"Apr 15",country:"Thailand",city:"Krabi",name:"Tiger Cave Temple",type:"Temple",notes:"Stair hike viewpoint",lat:8.1262,lng:98.9242},
+  {date:"Apr 16",country:"Thailand",city:"Phi Phi Islands",name:"Maya Bay",type:"Beach",notes:"Famous beach from The Beach",lat:7.6781,lng:98.7648},
+  {date:"Apr 16",country:"Thailand",city:"Phi Phi Islands",name:"Pileh Lagoon",type:"Nature",notes:"Turquoise lagoon",lat:7.6830,lng:98.7700},
+  {date:"Apr 17",country:"Thailand",city:"Phi Phi Islands",name:"Phi Phi Viewpoint",type:"Viewpoint",notes:"Island panorama",lat:7.7400,lng:98.7773},
+  {date:"Apr 18",country:"Thailand",city:"Phuket",name:"Phuket Old Town",type:"Historic Area",notes:"Colorful streets",lat:7.8845,lng:98.3867},
+  {date:"Apr 19",country:"Thailand",city:"Phuket",name:"Big Buddha Phuket",type:"Landmark",notes:"Hilltop statue",lat:7.8278,lng:98.3128},
+  {date:"Apr 19",country:"Thailand",city:"Phuket",name:"Patong Beach",type:"Beach",notes:"Nightlife beach area",lat:7.8965,lng:98.2960},
+  {date:"Apr 20",country:"Thailand",city:"Phuket",name:"Promthep Cape",type:"Viewpoint",notes:"Sunset viewpoint",lat:7.7586,lng:98.3050}
+];
+
+const colors = {
+  "Germany":"#e74c3c",
+  "Czech Republic":"#9b59b6",
+  "Hong Kong":"#e67e22",
+  "Vietnam":"#27ae60",
+  "Thailand":"#3498db"
+};
+
+const typeIcons = {
+  "Landmark":"⭐","Temple":"🛕","Nightlife":"🎉","Beach":"🏖️","Viewpoint":"👁️",
+  "Nature":"🌿","Market":"🛒","Museum":"🏛️","Museum Complex":"🏛️","Park":"🌳",
+  "Architecture":"🏗️","Transport":"⛴️","Neighborhood":"🏘️","Town":"📍",
+  "Island":"🏝️","Historic Area":"🏯","Adventure":"🪂","Yoga":"🧘"
+};
+
+const map = L.map('map').setView([25,80],3);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
+}).addTo(map);
+
+// Draw route lines by country
+const grouped = {};
+places.forEach(p=>{
+  if(!grouped[p.country]) grouped[p.country]=[];
+  grouped[p.country].push([p.lat,p.lng]);
+});
+Object.entries(grouped).forEach(([country,coords])=>{
+  L.polyline(coords,{color:colors[country],weight:2.5,opacity:0.5,dashArray:'8 6'}).addTo(map);
+});
+
+// Add markers
+const markers = L.featureGroup();
+places.forEach(p=>{
+  const icon = typeIcons[p.type]||"📌";
+  const c = colors[p.country];
+  const marker = L.circleMarker([p.lat,p.lng],{
+    radius:7,fillColor:c,color:'#fff',weight:2,fillOpacity:0.9
+  }).addTo(markers);
+  marker.bindPopup(`<div style="min-width:180px">
+    <strong>${icon} ${p.name}</strong><br>
+    <span style="color:${c};font-weight:600">${p.date}</span> · ${p.city}, ${p.country}<br>
+    <em>${p.type}</em><br>
+    <span style="color:#555">${p.notes}</span>
+  </div>`);
+  marker.bindTooltip(p.name,{direction:'top',offset:[0,-8]});
+});
+markers.addTo(map);
+map.fitBounds(markers.getBounds().pad(0.1));
+
+// Legend
+const legend = L.control({position:'bottomright'});
+legend.onAdd = function(){
+  const div = L.DomUtil.create('div','legend');
+  div.innerHTML = '<h4>🗺️ Nav\'s Trip</h4>' +
+    Object.entries(colors).map(([k,v])=>`<i style="background:${v}"></i>${k}`).join('<br>') +
+    '<br><small style="color:#888">Mar 12 – Apr 20, 2026</small>';
+  return div;
+};
+legend.addTo(map);
+</script>
+</body>
+</html>
