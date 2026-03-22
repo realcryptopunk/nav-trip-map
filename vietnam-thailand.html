@@ -7,24 +7,41 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0}
-#map{width:100%;height:50vh;position:sticky;top:0;z-index:10}
-.container{max-width:700px;margin:0 auto;padding:16px}
-h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gradient(135deg,#ff6b35,#f7c948);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.subtitle{text-align:center;color:#888;font-size:0.9rem;padding-bottom:20px}
-.country-header{font-size:1.4rem;font-weight:700;padding:20px 0 10px;display:flex;align-items:center;gap:10px}
-.country-header.vietnam{color:#da251d}
-.country-header.thailand{color:#f7c948}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;-webkit-font-smoothing:antialiased;overscroll-behavior-y:contain}
 
-.day-card{background:#1a1a2e;border-radius:16px;overflow:hidden;margin-bottom:20px;border:1px solid #2a2a3e}
-.day-card img{width:100%;height:200px;object-fit:cover}
-.day-content{padding:16px}
-.day-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:4px}
-.day-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
-.day-desc{font-size:0.9rem;color:#aaa;line-height:1.6;margin-bottom:12px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.tag{font-size:0.7rem;padding:4px 10px;border-radius:20px;background:#2a2a3e;color:#ccc}
+/* Map — shorter on mobile so content is visible */
+#map{width:100%;height:35vh;position:sticky;top:0;z-index:10;border-bottom:2px solid #2a2a3e}
+@media(min-width:600px){#map{height:45vh}}
+
+/* Toggle map button */
+.map-toggle{position:sticky;top:calc(35vh - 1px);z-index:11;text-align:center;padding:0;background:linear-gradient(to bottom,transparent,#0f0f1a 60%);height:36px}
+@media(min-width:600px){.map-toggle{top:calc(45vh - 1px)}}
+.map-toggle button{background:#1a1a2e;border:1px solid #2a2a3e;color:#888;font-size:0.7rem;padding:4px 16px;border-radius:0 0 12px 12px;cursor:pointer;letter-spacing:0.5px;text-transform:uppercase}
+.map-toggle button:active{background:#2a2a3e}
+
+.container{max-width:700px;margin:0 auto;padding:12px}
+@media(min-width:600px){.container{padding:16px}}
+
+h1{font-size:1.6rem;text-align:center;padding:20px 12px 4px;background:linear-gradient(135deg,#ff6b35,#f7c948);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.3}
+.subtitle{text-align:center;color:#888;font-size:0.85rem;padding-bottom:16px}
+
+.country-header{font-size:1.3rem;font-weight:700;padding:16px 0 8px;display:flex;align-items:center;gap:8px;position:sticky;top:35vh;z-index:5;background:#0f0f1a;margin:0 -12px;padding-left:12px;padding-right:12px}
+@media(min-width:600px){.country-header{top:45vh;margin:0 -16px;padding-left:16px;padding-right:16px}}
+.country-header.vietnam{color:#da251d;border-bottom:2px solid #da251d}
+.country-header.thailand{color:#f7c948;border-bottom:2px solid #f7c948}
+
+/* Day cards — full bleed on small screens */
+.day-card{background:#1a1a2e;border-radius:14px;overflow:hidden;margin-bottom:16px;border:1px solid #2a2a3e}
+.day-card img{width:100%;height:180px;object-fit:cover}
+@media(min-width:600px){.day-card img{height:220px}}
+.day-content{padding:14px}
+.day-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1.2px;color:#666;margin-bottom:2px;font-weight:500}
+.day-title{font-size:1.15rem;font-weight:700;margin-bottom:6px;line-height:1.3}
+.day-desc{font-size:0.85rem;color:#999;line-height:1.6;margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.tag{font-size:0.65rem;padding:4px 10px;border-radius:20px;background:#2a2a3e;color:#ccc;white-space:nowrap}
 .tag.food{background:#2d1f0e;color:#f7c948}
 .tag.adventure{background:#1a0e2d;color:#a78bfa}
 .tag.culture{background:#0e2d1a;color:#6ee7b7}
@@ -32,37 +49,59 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 .tag.party{background:#2d0e1a;color:#fb7185}
 .tag.nature{background:#0e2d0e;color:#86efac}
 
-.book-btn{display:inline-block;padding:10px 20px;border-radius:10px;font-size:0.85rem;font-weight:600;text-decoration:none;margin:4px 4px 4px 0;transition:all 0.2s}
+/* Book buttons — full width on mobile for easy tapping */
+.book-btns{display:flex;flex-direction:column;gap:6px}
+@media(min-width:500px){.book-btns{flex-direction:row;flex-wrap:wrap}}
+.book-btn{display:flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:12px;font-size:0.85rem;font-weight:600;text-decoration:none;transition:all 0.15s;min-height:44px;text-align:center}
+.book-btn:active{transform:scale(0.97);opacity:0.8}
+@media(min-width:500px){.book-btn{padding:10px 18px;flex:0 1 auto}}
 .book-btn.flight{background:#1e3a5f;color:#60a5fa}
-.book-btn.flight:hover{background:#2a4a6f}
 .book-btn.tour{background:#3b1f5e;color:#a78bfa}
-.book-btn.tour:hover{background:#4b2f6e}
 .book-btn.hotel{background:#1f3b2e;color:#6ee7b7}
-.book-btn.hotel:hover{background:#2f4b3e}
 .book-btn.activity{background:#5e3b1f;color:#f7c948}
-.book-btn.activity:hover{background:#6e4b2f}
 
-.checklist{background:#1a1a2e;border-radius:16px;padding:20px;margin:20px 0;border:1px solid #2a2a3e}
-.checklist h2{font-size:1.2rem;margin-bottom:12px;color:#f7c948}
-.check-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #2a2a3e;font-size:0.9rem}
+/* Checklist — bigger tap targets */
+.checklist{background:#1a1a2e;border-radius:14px;padding:16px;margin:16px 0;border:1px solid #2a2a3e}
+.checklist h2{font-size:1.1rem;margin-bottom:10px;color:#f7c948}
+.check-item{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #2a2a3e;font-size:0.85rem;min-height:44px}
 .check-item:last-child{border-bottom:none}
-.check-item .priority{font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap}
+.check-item .priority{font-size:0.6rem;padding:3px 8px;border-radius:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
 .priority.now{background:#5e1f1f;color:#fca5a5}
 .priority.soon{background:#5e4b1f;color:#fcd34d}
 .priority.later{background:#1f3b2e;color:#6ee7b7}
-.check-item a{color:#60a5fa;text-decoration:none}
+.check-item a{color:#60a5fa;text-decoration:none;-webkit-tap-highlight-color:rgba(96,165,250,0.2);line-height:1.4}
+.check-item a:active{opacity:0.7}
 
-.budget{background:#1a1a2e;border-radius:16px;padding:20px;margin:20px 0;border:1px solid #2a2a3e}
-.budget h2{font-size:1.2rem;margin-bottom:12px;color:#6ee7b7}
-.budget-row{display:flex;justify-content:space-between;padding:6px 0;font-size:0.9rem;border-bottom:1px solid #2a2a3e}
-.budget-row:last-child{border-bottom:none;font-weight:700;color:#f7c948;padding-top:10px}
+/* Budget */
+.budget{background:#1a1a2e;border-radius:14px;padding:16px;margin:16px 0;border:1px solid #2a2a3e}
+.budget h2{font-size:1.1rem;margin-bottom:10px;color:#6ee7b7}
+.budget-row{display:flex;justify-content:space-between;padding:8px 0;font-size:0.85rem;border-bottom:1px solid #2a2a3e;gap:8px}
+.budget-row span:first-child{flex:1}
+.budget-row span:last-child{white-space:nowrap;font-weight:500}
+.budget-row:last-child{border-bottom:none;font-weight:700;color:#f7c948;padding-top:12px;font-size:0.95rem}
 
-.footer{text-align:center;padding:40px 16px;color:#555;font-size:0.8rem}
+.footer{text-align:center;padding:32px 16px 48px;color:#444;font-size:0.75rem}
+
+/* Safe area for notched phones */
+@supports(padding:max(0px)){
+  body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+  .footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+}
+
+/* Smooth image loading */
+.day-card img{background:#1a1a2e;transition:opacity 0.3s}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#0f0f1a}
+::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:4px}
 </style>
 </head>
 <body>
 
 <div id="map"></div>
+
+<div class="map-toggle"><button onclick="toggleMap()">▼ Hide Map</button></div>
 
 <h1>🇻🇳 Vietnam → 🇹🇭 Thailand</h1>
 <p class="subtitle">Mar 27 – Apr 15, 2026 · 20 Days</p>
@@ -96,8 +135,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Arrive in Hanoi</div>
 <div class="day-desc">Land from Hong Kong. Check into your hotel in the Old Quarter. Wander the narrow streets, try egg coffee at Café Giang, eat phở on a tiny plastic stool. Get your bearings.</div>
 <div class="tags"><span class="tag food">🍜 Street Food</span><span class="tag culture">🏛 Culture</span></div>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Old+Quarter+Hanoi&checkin=2026-03-27&checkout=2026-03-28" target="_blank">🏨 Book Hanoi Hotel</a>
-</div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Old+Quarter+Hanoi&checkin=2026-03-27&checkout=2026-03-28" target="_blank">🏨 Book Hanoi Hotel</a></div></div>
 </div>
 
 <div class="day-card">
@@ -107,8 +145,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Hanoi → Night Bus to Ha Giang</div>
 <div class="day-desc">Explore Hanoi during the day — Temple of Literature, Hoan Kiem Lake, train street. Evening: catch the night bus to Ha Giang (~7hrs, arrive early morning). Your tour operator usually arranges this.</div>
 <div class="tags"><span class="tag culture">🏛 Culture</span><span class="tag adventure">🚌 Night Bus</span></div>
-<a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ Book Ha Giang Tour (includes bus)</a>
-</div>
+<div class="book-btns"><a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ Book Ha Giang Tour (includes bus)</a></div></div>
 </div>
 
 <div class="day-card">
@@ -118,9 +155,8 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Ha Giang Loop 🏍️</div>
 <div class="day-desc">The highlight of Vietnam. 3 days riding through insane mountain passes, rice terraces, and cliff roads along the Chinese border. Ma Pi Leng Pass is one of the most beautiful roads on Earth. Stay in homestays, eat with locals. Unforgettable.</div>
 <div class="tags"><span class="tag adventure">🏍️ Motorbike</span><span class="tag nature">🏔 Mountains</span><span class="tag culture">🏘 Homestay</span></div>
-<a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ QT Motorbikes (Instagram)</a>
-<a class="book-btn tour" href="https://www.instagram.com/jasminehostelhagiang/" target="_blank">🏍️ Jasmine Hostel Tours</a>
-</div>
+<div class="book-btns"><a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ QT Motorbikes (Instagram)</a>
+<a class="book-btn tour" href="https://www.instagram.com/jasminehostelhagiang/" target="_blank">🏍️ Jasmine Hostel Tours</a></div></div>
 </div>
 
 <div class="day-card">
@@ -130,9 +166,8 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Ha Giang → Hanoi → Fly to HCMC</div>
 <div class="day-desc">Early morning bus back to Hanoi. Catch your afternoon/evening flight to Ho Chi Minh City (~2hrs). Check in, hit the Bui Vien walking street for a beer.</div>
 <div class="tags"><span class="tag adventure">✈️ Travel Day</span><span class="tag party">🍻 Nightlife</span></div>
-<a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Hanoi+to+Ho+Chi+Minh+City+April+1+2026" target="_blank">✈️ Book HAN→SGN Flight</a>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=District+1+Ho+Chi+Minh+City&checkin=2026-04-01&checkout=2026-04-04" target="_blank">🏨 Book HCMC Hotel</a>
-</div>
+<div class="book-btns"><a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Hanoi+to+Ho+Chi+Minh+City+April+1+2026" target="_blank">✈️ Book HAN→SGN Flight</a>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=District+1+Ho+Chi+Minh+City&checkin=2026-04-01&checkout=2026-04-04" target="_blank">🏨 Book HCMC Hotel</a></div></div>
 </div>
 
 <div class="day-card">
@@ -155,8 +190,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Fly to Bangkok</div>
 <div class="day-desc">Land in Bangkok. Check into Khao San Road area or Sukhumvit. Grand Palace, Wat Pho (reclining Buddha), street food on Yaowarat (Chinatown). Pad thai, mango sticky rice, Thai iced tea.</div>
 <div class="tags"><span class="tag culture">🏛 Temples</span><span class="tag food">🍜 Street Food</span></div>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Khao+San+Road+Bangkok&checkin=2026-04-04&checkout=2026-04-07" target="_blank">🏨 Book Bangkok Hotel</a>
-</div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Khao+San+Road+Bangkok&checkin=2026-04-04&checkout=2026-04-07" target="_blank">🏨 Book Bangkok Hotel</a></div></div>
 </div>
 
 <div class="day-card">
@@ -176,8 +210,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Skydive Pattaya 🪂</div>
 <div class="day-desc">Day trip to Sriracha (~1.5hrs from Bangkok). Tandem jump from 13,000ft — 60 seconds of freefall at 125mph with ocean views. Back to Bangkok by evening.</div>
 <div class="tags"><span class="tag adventure">🪂 Skydive</span><span class="tag adventure">⚡ Adrenaline</span></div>
-<a class="book-btn activity" href="https://thaiskyadventures.com" target="_blank">🪂 Book Skydive (~$300)</a>
-</div>
+<div class="book-btns"><a class="book-btn activity" href="https://thaiskyadventures.com" target="_blank">🪂 Book Skydive (~$300)</a></div></div>
 </div>
 
 <div class="day-card">
@@ -187,9 +220,8 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Fly to Phuket</div>
 <div class="day-desc">Morning flight to Phuket (~1hr). Check in near Kata or Patong Beach. Afternoon: chill at the beach or explore Phuket Old Town.</div>
 <div class="tags"><span class="tag beach">🏖 Beach</span><span class="tag culture">🏘 Old Town</span></div>
-<a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Bangkok+to+Phuket+April+7+2026" target="_blank">✈️ Book BKK→HKT Flight</a>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Kata+Beach+Phuket&checkin=2026-04-07&checkout=2026-04-11" target="_blank">🏨 Book Phuket Hotel</a>
-</div>
+<div class="book-btns"><a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Bangkok+to+Phuket+April+7+2026" target="_blank">✈️ Book BKK→HKT Flight</a>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Kata+Beach+Phuket&checkin=2026-04-07&checkout=2026-04-11" target="_blank">🏨 Book Phuket Hotel</a></div></div>
 </div>
 
 <div class="day-card">
@@ -199,8 +231,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Phang Nga Bay 🚤</div>
 <div class="day-desc">Full day longtail boat tour — limestone karsts rising from emerald water, James Bond Island, kayaking through sea caves, hidden lagoons. This is Thailand's Ha Long Bay but better. Book a small-group tour for ~$40-60.</div>
 <div class="tags"><span class="tag nature">🏝 Islands</span><span class="tag adventure">🛶 Kayaking</span></div>
-<a class="book-btn tour" href="https://www.google.com/search?q=phang+nga+bay+tour+from+phuket+book" target="_blank">🚤 Book Phang Nga Tour</a>
-</div>
+<div class="book-btns"><a class="book-btn tour" href="https://www.google.com/search?q=phang+nga+bay+tour+from+phuket+book" target="_blank">🚤 Book Phang Nga Tour</a></div></div>
 </div>
 
 <div class="day-card">
@@ -210,8 +241,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Khao Sok National Park 🏕</div>
 <div class="day-desc">Drive to Khao Sok (~3hrs from Phuket). Sleep in floating bungalows on Cheow Lan Lake — surrounded by ancient rainforest and limestone cliffs. Night safari, kayaking, swimming in the lake. Magical.</div>
 <div class="tags"><span class="tag nature">🌿 Jungle</span><span class="tag adventure">🏕 Floating Bungalow</span></div>
-<a class="book-btn hotel" href="https://www.khaosokdiscovery.com" target="_blank">🏠 Book Floating Bungalow</a>
-</div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.khaosokdiscovery.com" target="_blank">🏠 Book Floating Bungalow</a></div></div>
 </div>
 
 <div class="day-card">
@@ -231,8 +261,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Ferry to Koh Phi Phi 🏝</div>
 <div class="day-desc">Ferry from Phuket to Phi Phi (~2hrs, ~$15). Maya Bay (from The Beach), Pileh Lagoon snorkeling, Viking Cave. Party island at night — fire shows on the beach, cheap buckets.</div>
 <div class="tags"><span class="tag beach">🏝 Island</span><span class="tag party">🔥 Fire Shows</span><span class="tag adventure">🤿 Snorkeling</span></div>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Phi+Phi&checkin=2026-04-11&checkout=2026-04-12" target="_blank">🏨 Book Phi Phi Hotel</a>
-</div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Phi+Phi&checkin=2026-04-11&checkout=2026-04-12" target="_blank">🏨 Book Phi Phi Hotel</a></div></div>
 </div>
 
 <div class="day-card">
@@ -242,9 +271,8 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Koh Samui / Koh Phangan</div>
 <div class="day-desc">Ferry to Koh Samui or Koh Phangan. Beach vibes, Ang Thong Marine Park day trip (42 islands, emerald lagoons). Apr 13 = Songkran Eve — the water fights start early. Join the chaos.</div>
 <div class="tags"><span class="tag beach">🏖 Beach</span><span class="tag nature">🏝 Marine Park</span><span class="tag party">💦 Songkran</span></div>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Samui&checkin=2026-04-12&checkout=2026-04-14" target="_blank">🏨 Book Samui Hotel</a>
-<a class="book-btn flight" href="https://www.bangkokair.com" target="_blank">✈️ Book Samui→BKK (Apr 14)</a>
-</div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Samui&checkin=2026-04-12&checkout=2026-04-14" target="_blank">🏨 Book Samui Hotel</a>
+<a class="book-btn flight" href="https://www.bangkokair.com" target="_blank">✈️ Book Samui→BKK (Apr 14)</a></div></div>
 </div>
 
 <div class="day-card">
@@ -254,8 +282,7 @@ h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gr
 <div class="day-title">Bangkok — Songkran 💦🔫</div>
 <div class="day-desc">Fly back to Bangkok. It's SONGKRAN — Thai New Year. The entire city turns into a massive water fight. Silom Road and Khao San Road are ground zero. You WILL get soaked. Embrace it. One of the best festivals on earth.</div>
 <div class="tags"><span class="tag party">💦 Songkran</span><span class="tag culture">🎉 Festival</span><span class="tag party">🔫 Water Fight</span></div>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Silom+Bangkok&checkin=2026-04-14&checkout=2026-04-15" target="_blank">🏨 Book Bangkok Hotel</a>
-</div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Silom+Bangkok&checkin=2026-04-14&checkout=2026-04-15" target="_blank">🏨 Book Bangkok Hotel</a></div></div>
 </div>
 
 <div class="day-card">
@@ -330,6 +357,27 @@ stops.forEach(s => {
   L.marker([s.lat,s.lng],{icon}).addTo(map)
     .bindPopup(`<b>${s.name}</b><br>${s.days}`);
 });
+
+let mapVisible = true;
+function toggleMap(){
+  const m = document.getElementById('map');
+  const btn = document.querySelector('.map-toggle button');
+  const ch = document.querySelectorAll('.country-header');
+  if(mapVisible){
+    m.style.height='0';m.style.minHeight='0';m.style.borderBottom='none';
+    btn.textContent='▲ Show Map';
+    document.querySelector('.map-toggle').style.top='0';
+    ch.forEach(c=>c.style.top='0');
+  } else {
+    m.style.height='';m.style.minHeight='';m.style.borderBottom='';
+    btn.textContent='▼ Hide Map';
+    const h = window.innerWidth >= 600 ? '45vh' : '35vh';
+    document.querySelector('.map-toggle').style.top='calc('+h+' - 1px)';
+    ch.forEach(c=>c.style.top=h);
+    map.invalidateSize();
+  }
+  mapVisible = !mapVisible;
+}
 </script>
 </body>
 </html>
