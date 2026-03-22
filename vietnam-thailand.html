@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vietnam & Thailand Trip — Mar 27 – Apr 15</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0}
+#map{width:100%;height:50vh;position:sticky;top:0;z-index:10}
+.container{max-width:700px;margin:0 auto;padding:16px}
+h1{font-size:1.8rem;text-align:center;padding:24px 16px 4px;background:linear-gradient(135deg,#ff6b35,#f7c948);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#888;font-size:0.9rem;padding-bottom:20px}
+.country-header{font-size:1.4rem;font-weight:700;padding:20px 0 10px;display:flex;align-items:center;gap:10px}
+.country-header.vietnam{color:#da251d}
+.country-header.thailand{color:#f7c948}
+
+.day-card{background:#1a1a2e;border-radius:16px;overflow:hidden;margin-bottom:20px;border:1px solid #2a2a3e}
+.day-card img{width:100%;height:200px;object-fit:cover}
+.day-content{padding:16px}
+.day-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:4px}
+.day-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.day-desc{font-size:0.9rem;color:#aaa;line-height:1.6;margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tag{font-size:0.7rem;padding:4px 10px;border-radius:20px;background:#2a2a3e;color:#ccc}
+.tag.food{background:#2d1f0e;color:#f7c948}
+.tag.adventure{background:#1a0e2d;color:#a78bfa}
+.tag.culture{background:#0e2d1a;color:#6ee7b7}
+.tag.beach{background:#0e1f2d;color:#67e8f9}
+.tag.party{background:#2d0e1a;color:#fb7185}
+.tag.nature{background:#0e2d0e;color:#86efac}
+
+.book-btn{display:inline-block;padding:10px 20px;border-radius:10px;font-size:0.85rem;font-weight:600;text-decoration:none;margin:4px 4px 4px 0;transition:all 0.2s}
+.book-btn.flight{background:#1e3a5f;color:#60a5fa}
+.book-btn.flight:hover{background:#2a4a6f}
+.book-btn.tour{background:#3b1f5e;color:#a78bfa}
+.book-btn.tour:hover{background:#4b2f6e}
+.book-btn.hotel{background:#1f3b2e;color:#6ee7b7}
+.book-btn.hotel:hover{background:#2f4b3e}
+.book-btn.activity{background:#5e3b1f;color:#f7c948}
+.book-btn.activity:hover{background:#6e4b2f}
+
+.checklist{background:#1a1a2e;border-radius:16px;padding:20px;margin:20px 0;border:1px solid #2a2a3e}
+.checklist h2{font-size:1.2rem;margin-bottom:12px;color:#f7c948}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #2a2a3e;font-size:0.9rem}
+.check-item:last-child{border-bottom:none}
+.check-item .priority{font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap}
+.priority.now{background:#5e1f1f;color:#fca5a5}
+.priority.soon{background:#5e4b1f;color:#fcd34d}
+.priority.later{background:#1f3b2e;color:#6ee7b7}
+.check-item a{color:#60a5fa;text-decoration:none}
+
+.budget{background:#1a1a2e;border-radius:16px;padding:20px;margin:20px 0;border:1px solid #2a2a3e}
+.budget h2{font-size:1.2rem;margin-bottom:12px;color:#6ee7b7}
+.budget-row{display:flex;justify-content:space-between;padding:6px 0;font-size:0.9rem;border-bottom:1px solid #2a2a3e}
+.budget-row:last-child{border-bottom:none;font-weight:700;color:#f7c948;padding-top:10px}
+
+.footer{text-align:center;padding:40px 16px;color:#555;font-size:0.8rem}
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<h1>🇻🇳 Vietnam → 🇹🇭 Thailand</h1>
+<p class="subtitle">Mar 27 – Apr 15, 2026 · 20 Days</p>
+
+<div class="container">
+
+<!-- BOOKING CHECKLIST -->
+<div class="checklist">
+<h2>📋 Book These Now</h2>
+<div class="check-item"><span class="priority now">BOOK NOW</span><a href="https://www.google.com/travel/flights/search?q=HAN%20to%20SGN%20apr%201%202026" target="_blank">✈️ Hanoi → HCMC flight (Apr 1) ~$35-80</a></div>
+<div class="check-item"><span class="priority now">BOOK NOW</span><a href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ Ha Giang Loop 3-day tour ~$80-150</a></div>
+<div class="check-item"><span class="priority now">BOOK NOW</span><a href="https://thaiskyadventures.com" target="_blank">🪂 Skydive Pattaya (Apr 6) ~$300</a></div>
+<div class="check-item"><span class="priority now">BOOK NOW</span><a href="https://www.google.com/travel/flights/search?q=BKK%20to%20HKT%20apr%207%202026" target="_blank">✈️ Bangkok → Phuket flight (Apr 7) ~$25-50</a></div>
+<div class="check-item"><span class="priority now">BOOK NOW</span><a href="https://www.bangkokair.com" target="_blank">✈️ Koh Samui → Bangkok (Apr 14) ~$80-130</a></div>
+<div class="check-item"><span class="priority soon">THIS WEEK</span><a href="https://www.khaosokdiscovery.com" target="_blank">🏠 Khao Sok floating bungalow (Apr 9)</a></div>
+<div class="check-item"><span class="priority soon">THIS WEEK</span><a href="https://www.booking.com/searchresults.html?ss=Old+Quarter+Hanoi" target="_blank">🏨 Hanoi hotel (Mar 27 + Apr 1)</a></div>
+<div class="check-item"><span class="priority soon">THIS WEEK</span><a href="https://www.booking.com/searchresults.html?ss=District+1+Ho+Chi+Minh+City" target="_blank">🏨 HCMC hotel (Apr 2-3)</a></div>
+<div class="check-item"><span class="priority soon">THIS WEEK</span><a href="https://www.booking.com/searchresults.html?ss=Khao+San+Road+Bangkok" target="_blank">🏨 Bangkok hotel (Apr 4-6 + Apr 14)</a></div>
+<div class="check-item"><span class="priority later">CAN WAIT</span><a href="https://www.booking.com/searchresults.html?ss=Kata+Beach+Phuket" target="_blank">🏨 Phuket hotel (Apr 7-10)</a></div>
+<div class="check-item"><span class="priority later">CAN WAIT</span><a href="https://www.booking.com/searchresults.html?ss=Koh+Phi+Phi" target="_blank">🏨 Koh Phi Phi hotel (Apr 11)</a></div>
+<div class="check-item"><span class="priority later">CAN WAIT</span><a href="https://www.booking.com/searchresults.html?ss=Koh+Samui" target="_blank">🏨 Koh Samui hotel (Apr 12-13)</a></div>
+</div>
+
+<!-- VIETNAM -->
+<div class="country-header vietnam">🇻🇳 Vietnam</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80" alt="Hanoi Old Quarter">
+<div class="day-content">
+<div class="day-label">Day 1 · Mar 27</div>
+<div class="day-title">Arrive in Hanoi</div>
+<div class="day-desc">Land from Hong Kong. Check into your hotel in the Old Quarter. Wander the narrow streets, try egg coffee at Café Giang, eat phở on a tiny plastic stool. Get your bearings.</div>
+<div class="tags"><span class="tag food">🍜 Street Food</span><span class="tag culture">🏛 Culture</span></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Old+Quarter+Hanoi&checkin=2026-03-27&checkout=2026-03-28" target="_blank">🏨 Book Hanoi Hotel</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1570366404839-173099e1cd86?w=800&q=80" alt="Night bus Vietnam">
+<div class="day-content">
+<div class="day-label">Day 2 · Mar 28</div>
+<div class="day-title">Hanoi → Night Bus to Ha Giang</div>
+<div class="day-desc">Explore Hanoi during the day — Temple of Literature, Hoan Kiem Lake, train street. Evening: catch the night bus to Ha Giang (~7hrs, arrive early morning). Your tour operator usually arranges this.</div>
+<div class="tags"><span class="tag culture">🏛 Culture</span><span class="tag adventure">🚌 Night Bus</span></div>
+<a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ Book Ha Giang Tour (includes bus)</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80" alt="Ha Giang Loop">
+<div class="day-content">
+<div class="day-label">Days 3-5 · Mar 29-31</div>
+<div class="day-title">Ha Giang Loop 🏍️</div>
+<div class="day-desc">The highlight of Vietnam. 3 days riding through insane mountain passes, rice terraces, and cliff roads along the Chinese border. Ma Pi Leng Pass is one of the most beautiful roads on Earth. Stay in homestays, eat with locals. Unforgettable.</div>
+<div class="tags"><span class="tag adventure">🏍️ Motorbike</span><span class="tag nature">🏔 Mountains</span><span class="tag culture">🏘 Homestay</span></div>
+<a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ QT Motorbikes (Instagram)</a>
+<a class="book-btn tour" href="https://www.instagram.com/jasminehostelhagiang/" target="_blank">🏍️ Jasmine Hostel Tours</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80" alt="Hanoi">
+<div class="day-content">
+<div class="day-label">Day 6 · Apr 1</div>
+<div class="day-title">Ha Giang → Hanoi → Fly to HCMC</div>
+<div class="day-desc">Early morning bus back to Hanoi. Catch your afternoon/evening flight to Ho Chi Minh City (~2hrs). Check in, hit the Bui Vien walking street for a beer.</div>
+<div class="tags"><span class="tag adventure">✈️ Travel Day</span><span class="tag party">🍻 Nightlife</span></div>
+<a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Hanoi+to+Ho+Chi+Minh+City+April+1+2026" target="_blank">✈️ Book HAN→SGN Flight</a>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=District+1+Ho+Chi+Minh+City&checkin=2026-04-01&checkout=2026-04-04" target="_blank">🏨 Book HCMC Hotel</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80" alt="HCMC">
+<div class="day-content">
+<div class="day-label">Days 7-8 · Apr 2-3</div>
+<div class="day-title">Ho Chi Minh City</div>
+<div class="day-desc">War Remnants Museum (heavy but essential), Ben Thanh Market, Cu Chi Tunnels day trip, rooftop bars in District 1. Vietnamese coffee is next level. Try bánh mì from a street cart — best sandwich on earth for $1.</div>
+<div class="tags"><span class="tag culture">🏛 History</span><span class="tag food">🥖 Bánh Mì</span><span class="tag party">🍸 Rooftop Bars</span></div>
+</div>
+</div>
+
+<!-- THAILAND -->
+<div class="country-header thailand">🇹🇭 Thailand</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800&q=80" alt="Bangkok">
+<div class="day-content">
+<div class="day-label">Day 9 · Apr 4</div>
+<div class="day-title">Fly to Bangkok</div>
+<div class="day-desc">Land in Bangkok. Check into Khao San Road area or Sukhumvit. Grand Palace, Wat Pho (reclining Buddha), street food on Yaowarat (Chinatown). Pad thai, mango sticky rice, Thai iced tea.</div>
+<div class="tags"><span class="tag culture">🏛 Temples</span><span class="tag food">🍜 Street Food</span></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Khao+San+Road+Bangkok&checkin=2026-04-04&checkout=2026-04-07" target="_blank">🏨 Book Bangkok Hotel</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80" alt="Bangkok temples">
+<div class="day-content">
+<div class="day-label">Day 10 · Apr 5</div>
+<div class="day-title">Bangkok — Explore</div>
+<div class="day-desc">Chatuchak Weekend Market (if Saturday/Sunday), floating markets, rooftop bar at sunset (Sky Bar or Octave). Bangkok nightlife is legendary — RCA, Sukhumvit Soi 11, or Khao San Road.</div>
+<div class="tags"><span class="tag food">🛍 Markets</span><span class="tag party">🌃 Nightlife</span></div>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1604593904805-0379ddff1e63?w=800&q=80" alt="Skydiving">
+<div class="day-content">
+<div class="day-label">Day 11 · Apr 6</div>
+<div class="day-title">Skydive Pattaya 🪂</div>
+<div class="day-desc">Day trip to Sriracha (~1.5hrs from Bangkok). Tandem jump from 13,000ft — 60 seconds of freefall at 125mph with ocean views. Back to Bangkok by evening.</div>
+<div class="tags"><span class="tag adventure">🪂 Skydive</span><span class="tag adventure">⚡ Adrenaline</span></div>
+<a class="book-btn activity" href="https://thaiskyadventures.com" target="_blank">🪂 Book Skydive (~$300)</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80" alt="Phang Nga Bay">
+<div class="day-content">
+<div class="day-label">Day 12 · Apr 7</div>
+<div class="day-title">Fly to Phuket</div>
+<div class="day-desc">Morning flight to Phuket (~1hr). Check in near Kata or Patong Beach. Afternoon: chill at the beach or explore Phuket Old Town.</div>
+<div class="tags"><span class="tag beach">🏖 Beach</span><span class="tag culture">🏘 Old Town</span></div>
+<a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Bangkok+to+Phuket+April+7+2026" target="_blank">✈️ Book BKK→HKT Flight</a>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Kata+Beach+Phuket&checkin=2026-04-07&checkout=2026-04-11" target="_blank">🏨 Book Phuket Hotel</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=800&q=80" alt="Phang Nga Bay James Bond Island">
+<div class="day-content">
+<div class="day-label">Day 13 · Apr 8</div>
+<div class="day-title">Phang Nga Bay 🚤</div>
+<div class="day-desc">Full day longtail boat tour — limestone karsts rising from emerald water, James Bond Island, kayaking through sea caves, hidden lagoons. This is Thailand's Ha Long Bay but better. Book a small-group tour for ~$40-60.</div>
+<div class="tags"><span class="tag nature">🏝 Islands</span><span class="tag adventure">🛶 Kayaking</span></div>
+<a class="book-btn tour" href="https://www.google.com/search?q=phang+nga+bay+tour+from+phuket+book" target="_blank">🚤 Book Phang Nga Tour</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1474181628636-7f15da29cf19?w=800&q=80" alt="Khao Sok">
+<div class="day-content">
+<div class="day-label">Day 14 · Apr 9</div>
+<div class="day-title">Khao Sok National Park 🏕</div>
+<div class="day-desc">Drive to Khao Sok (~3hrs from Phuket). Sleep in floating bungalows on Cheow Lan Lake — surrounded by ancient rainforest and limestone cliffs. Night safari, kayaking, swimming in the lake. Magical.</div>
+<div class="tags"><span class="tag nature">🌿 Jungle</span><span class="tag adventure">🏕 Floating Bungalow</span></div>
+<a class="book-btn hotel" href="https://www.khaosokdiscovery.com" target="_blank">🏠 Book Floating Bungalow</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&q=80" alt="Surfing Phuket">
+<div class="day-content">
+<div class="day-label">Day 15 · Apr 10</div>
+<div class="day-title">Surf Day — Kata Beach 🏄</div>
+<div class="day-desc">Back to Phuket. Surf lesson at Kata Beach — beginner-friendly waves, board rentals everywhere (~$10-15/hr). Afternoon: Thai massage on the beach. Last night in Phuket — Bangla Road for the experience.</div>
+<div class="tags"><span class="tag adventure">🏄 Surfing</span><span class="tag beach">🏖 Beach</span><span class="tag party">🌃 Bangla Road</span></div>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=800&q=80" alt="Koh Phi Phi">
+<div class="day-content">
+<div class="day-label">Day 16 · Apr 11</div>
+<div class="day-title">Ferry to Koh Phi Phi 🏝</div>
+<div class="day-desc">Ferry from Phuket to Phi Phi (~2hrs, ~$15). Maya Bay (from The Beach), Pileh Lagoon snorkeling, Viking Cave. Party island at night — fire shows on the beach, cheap buckets.</div>
+<div class="tags"><span class="tag beach">🏝 Island</span><span class="tag party">🔥 Fire Shows</span><span class="tag adventure">🤿 Snorkeling</span></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Phi+Phi&checkin=2026-04-11&checkout=2026-04-12" target="_blank">🏨 Book Phi Phi Hotel</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=800&q=80" alt="Koh Samui">
+<div class="day-content">
+<div class="day-label">Days 17-18 · Apr 12-13</div>
+<div class="day-title">Koh Samui / Koh Phangan</div>
+<div class="day-desc">Ferry to Koh Samui or Koh Phangan. Beach vibes, Ang Thong Marine Park day trip (42 islands, emerald lagoons). Apr 13 = Songkran Eve — the water fights start early. Join the chaos.</div>
+<div class="tags"><span class="tag beach">🏖 Beach</span><span class="tag nature">🏝 Marine Park</span><span class="tag party">💦 Songkran</span></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Samui&checkin=2026-04-12&checkout=2026-04-14" target="_blank">🏨 Book Samui Hotel</a>
+<a class="book-btn flight" href="https://www.bangkokair.com" target="_blank">✈️ Book Samui→BKK (Apr 14)</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=80" alt="Songkran Bangkok">
+<div class="day-content">
+<div class="day-label">Day 19 · Apr 14</div>
+<div class="day-title">Bangkok — Songkran 💦🔫</div>
+<div class="day-desc">Fly back to Bangkok. It's SONGKRAN — Thai New Year. The entire city turns into a massive water fight. Silom Road and Khao San Road are ground zero. You WILL get soaked. Embrace it. One of the best festivals on earth.</div>
+<div class="tags"><span class="tag party">💦 Songkran</span><span class="tag culture">🎉 Festival</span><span class="tag party">🔫 Water Fight</span></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Silom+Bangkok&checkin=2026-04-14&checkout=2026-04-15" target="_blank">🏨 Book Bangkok Hotel</a>
+</div>
+</div>
+
+<div class="day-card">
+<img src="https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=800&q=80" alt="Airport">
+<div class="day-content">
+<div class="day-label">Day 20 · Apr 15</div>
+<div class="day-title">Fly Home → NYC ✈️</div>
+<div class="day-desc">Bangkok → NYC. Trip complete. You surfed, skydived, rode motorbikes through mountains, slept on a floating bungalow in a jungle, and got blasted with water guns on Thai New Year. Legend.</div>
+<div class="tags"><span class="tag adventure">✈️ Home</span></div>
+</div>
+</div>
+
+<!-- BUDGET -->
+<div class="budget">
+<h2>💰 Estimated Budget</h2>
+<div class="budget-row"><span>✈️ Hanoi → HCMC</span><span>$35-80</span></div>
+<div class="budget-row"><span>✈️ Bangkok → Phuket</span><span>$25-50</span></div>
+<div class="budget-row"><span>✈️ Koh Samui → Bangkok</span><span>$80-130</span></div>
+<div class="budget-row"><span>🏍️ Ha Giang Loop (3 days)</span><span>$80-150</span></div>
+<div class="budget-row"><span>🪂 Skydive Pattaya</span><span>~$300</span></div>
+<div class="budget-row"><span>🏠 Khao Sok Bungalow</span><span>$50-120</span></div>
+<div class="budget-row"><span>🚤 Phang Nga Bay Tour</span><span>$40-60</span></div>
+<div class="budget-row"><span>⛴️ Ferries (Phuket→Phi Phi→Samui)</span><span>$30-50</span></div>
+<div class="budget-row"><span>🏨 Hotels (12 nights avg $30)</span><span>~$360</span></div>
+<div class="budget-row"><span>🍜 Food + Transport (20 days × $40)</span><span>~$800</span></div>
+<div class="budget-row"><span>TOTAL ESTIMATE</span><span>$1,800 - $2,100</span></div>
+</div>
+
+</div>
+
+<div class="footer">Built for Nav · March 2026</div>
+
+<script>
+const map = L.map('map').setView([14, 105], 5);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  attribution:'© OpenStreetMap © CARTO',maxZoom:19
+}).addTo(map);
+
+const stops = [
+  {name:"Hanoi",lat:21.0285,lng:105.8542,days:"Mar 27-28",color:"#da251d",icon:"🏙️"},
+  {name:"Ha Giang",lat:22.8233,lng:104.9844,days:"Mar 29-31",color:"#da251d",icon:"🏍️"},
+  {name:"Hanoi (return)",lat:21.0285,lng:105.8542,days:"Apr 1",color:"#da251d",icon:"✈️"},
+  {name:"Ho Chi Minh City",lat:10.8231,lng:106.6297,days:"Apr 1-3",color:"#da251d",icon:"🏙️"},
+  {name:"Bangkok",lat:13.7563,lng:100.5018,days:"Apr 4-6",color:"#f7c948",icon:"🏛️"},
+  {name:"Pattaya (Skydive)",lat:13.1211,lng:100.9215,days:"Apr 6",color:"#f7c948",icon:"🪂"},
+  {name:"Phuket",lat:7.8804,lng:98.3923,days:"Apr 7-10",color:"#f7c948",icon:"🏖️"},
+  {name:"Phang Nga Bay",lat:8.2754,lng:98.5001,days:"Apr 8",color:"#f7c948",icon:"🚤"},
+  {name:"Khao Sok",lat:8.9167,lng:98.5333,days:"Apr 9",color:"#f7c948",icon:"🏕️"},
+  {name:"Koh Phi Phi",lat:7.7407,lng:98.7784,days:"Apr 11",color:"#f7c948",icon:"🏝️"},
+  {name:"Koh Samui",lat:9.5120,lng:100.0136,days:"Apr 12-13",color:"#f7c948",icon:"🏖️"},
+  {name:"Bangkok (Songkran)",lat:13.7563,lng:100.5018,days:"Apr 14-15",color:"#f7c948",icon:"💦"},
+];
+
+// Draw route
+const routeCoords = stops.map(s => [s.lat, s.lng]);
+L.polyline(routeCoords, {color:'#ffffff',weight:2,opacity:0.3,dashArray:'8,8'}).addTo(map);
+
+// Vietnam route (red)
+const vnStops = stops.filter(s => s.color === '#da251d');
+L.polyline(vnStops.map(s=>[s.lat,s.lng]),{color:'#da251d',weight:3,opacity:0.6}).addTo(map);
+
+// Thailand route (gold)
+const thStops = stops.filter(s => s.color === '#f7c948');
+L.polyline(thStops.map(s=>[s.lat,s.lng]),{color:'#f7c948',weight:3,opacity:0.6}).addTo(map);
+
+// Markers
+stops.forEach(s => {
+  const icon = L.divIcon({
+    html:`<div style="background:${s.color};width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.5)">${s.icon}</div>`,
+    iconSize:[32,32],iconAnchor:[16,16],className:''
+  });
+  L.marker([s.lat,s.lng],{icon}).addTo(map)
+    .bindPopup(`<b>${s.name}</b><br>${s.days}`);
+});
+</script>
+</body>
+</html>
