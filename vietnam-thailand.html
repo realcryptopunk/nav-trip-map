@@ -95,6 +95,22 @@ h1{font-size:1.6rem;text-align:center;padding:20px 12px 4px;background:linear-gr
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:#0f0f1a}
 ::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:4px}
+
+/* Day detail expandable */
+.day-card{cursor:pointer;position:relative}
+.day-card .expand-hint{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;pointer-events:none;z-index:2}
+.day-detail{display:none;padding:0 14px 14px;border-top:1px solid #2a2a3e}
+.day-detail.open{display:block}
+.day-card.expanded .expand-hint{display:none}
+
+.timeline{list-style:none;padding:0;margin:8px 0 0}
+.timeline li{position:relative;padding:10px 0 10px 28px;border-left:2px solid #2a2a3e;font-size:0.83rem;color:#bbb;line-height:1.55}
+.timeline li:last-child{border-left-color:transparent}
+.timeline li::before{content:'';position:absolute;left:-6px;top:14px;width:10px;height:10px;border-radius:50%;background:#656AF1;border:2px solid #0f0f1a}
+.timeline .time{color:#656AF1;font-weight:600;font-size:0.75rem;display:block;margin-bottom:2px}
+.timeline .spot{color:#e0e0e0;font-weight:600}
+.timeline .tip{color:#f7c948;font-size:0.75rem;font-style:italic;margin-top:3px;display:block}
+.timeline .photo-tip{color:#a78bfa;font-size:0.75rem;margin-top:3px;display:block}
 </style>
 </head>
 <body>
@@ -131,52 +147,99 @@ h1{font-size:1.6rem;text-align:center;padding:20px 12px 4px;background:linear-gr
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80" alt="Hong Kong skyline">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 1 · Mon Mar 23</div>
 <div class="day-title">Arrive & Neon Kowloon 📸</div>
 <div class="day-desc">Land from Shanghai. Check in near Olympic station. Walk to Mong Kok (1 stop) — Fa Yuen St sneakers, Ladies Market. Then MTR to Quarry Bay for the Monster Building (Yick Fat) — THE Hong Kong photo, shoot wide looking straight up before sunset. Evening: Temple Street Night Market for neon street food shots, then Tim Ho Wan for the world's cheapest Michelin dim sum. End at TST waterfront for skyline at night.</div>
 <div class="tags"><span class="tag culture">🏙 Skyline</span><span class="tag food">🥟 Dim Sum</span><span class="tag adventure">📸 Monster Building</span></div>
-<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Olympic+Station+Hong+Kong&checkin=2026-03-23&checkout=2026-03-27" target="_blank">🏨 Book HK Hotel</a></div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Olympic+Station+Hong+Kong&checkin=2026-03-23&checkout=2026-03-27" target="_blank">🏨 Book HK Hotel</a>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">2:00 PM</span><span class="spot">Check in near Olympic station</span><br>Drop bags, freshen up, grab an Octopus card at the MTR station</li>
+<li><span class="time">3:30 PM</span><span class="spot">Mong Kok</span><br>Fa Yuen St (sneaker street), Ladies Market, egg waffles from a street cart<span class="photo-tip">📸 Shoot the narrow alleys + neon signs overhead</span></li>
+<li><span class="time">5:00 PM</span><span class="spot">Monster Building (Yick Fat Building)</span><br>MTR to Quarry Bay. The insane apartment courtyard — THE Hong Kong photo. Arrive before sunset for the best light<span class="photo-tip">📸 Shoot wide, look straight up. Classic Chrome film sim</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Temple Street Night Market</span><br>Street food, fortune tellers, neon chaos<span class="photo-tip">📸 Neon + steam from food stalls. ISO 1600-3200, wide open</span></li>
+<li><span class="time">8:30 PM</span><span class="spot">Tim Ho Wan (Mong Kok)</span><br>World's cheapest Michelin star. BBQ pork buns are mandatory. ~$8-12 per person</li>
+<li><span class="time">9:30 PM</span><span class="spot">TST Waterfront</span><br>Walk the promenade for the skyline at night. Hong Kong Island lit up across the harbor<span class="photo-tip">📸 Rest camera on railing for steady long exposure. Velvia film sim</span></li>
+</ul></div>
+</div>
 </div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80" alt="Victoria Peak Hong Kong">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 2 · Tue Mar 24</div>
 <div class="day-title">HK Island Golden Hour Circuit 📸</div>
 <div class="day-desc">Early: Victoria Peak via Peak Tram (first tram 7:30 AM, beat crowds). Shoot from Lugard Road walking path — no glass, better angle. Midday: Man Mo Temple — incense coils with light beams cutting through smoke, THE shot. Use slow shutter for smoke movement. Lunch: Yat Lok roast goose ($8 Michelin plate). Afternoon: PMQ + Hollywood Road street art. Golden hour: Star Ferry crossing at sunset — shoot from the boat. Night: Lan Kwai Fong bar hop or Ozone Bar (118th floor, highest bar on earth).</div>
-<div class="tags"><span class="tag adventure">📸 Victoria Peak</span><span class="tag culture">🕯 Man Mo Temple</span><span class="tag food">🍗 Roast Goose</span><span class="tag party">🍸 LKF / Ozone</span></div>
+<div class="tags"><span class="tag adventure">📸 Victoria Peak</span><span class="tag culture">🕯 Man Mo Temple</span><span class="tag food">🍗 Roast Goose</span><span class="tag party">🍸 LKF / Ozone</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">7:00 AM</span><span class="spot">Victoria Peak via Peak Tram</span><br>First tram at 7:30. Beat the crowds. Take the Lugard Road walking path around the peak — better angles, no glass<span class="photo-tip">📸 Morning haze over the harbor. Wide angle. Shoot from Lugard Road, not the tourist platform</span></li>
+<li><span class="time">10:00 AM</span><span class="spot">Man Mo Temple</span><br>MTR to Sheung Wan. Incense coils hanging from ceiling with light beams cutting through smoke<span class="photo-tip">📸 THE shot. Astia or Classic Neg film sim. Slow shutter (1/15s) to capture smoke movement. Tripod or brace against a pillar</span></li>
+<li><span class="time">12:00 PM</span><span class="spot">Lunch: Yat Lok Roast Goose</span><br>32 Stanley St, Central. Michelin-starred roast goose, $8 a plate. Get the goose rice</li>
+<li><span class="time">1:30 PM</span><span class="spot">PMQ + Hollywood Road</span><br>Former police quarters turned design hub. Street art, antique shops, great textures<span class="photo-tip">📸 Layered streets, compressed telephoto shots from the escalator</span></li>
+<li><span class="time">5:30 PM</span><span class="spot">Star Ferry at Sunset</span><br>Central Pier → TST. $0.50, ~8 min ride. Shoot from the open deck<span class="photo-tip">📸 Top 5 photo op worldwide. Harbor + skyline + golden light. Shoot continuously</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Avenue of Stars</span><br>Bruce Lee statue with the skyline behind. Walk the waterfront</li>
+<li><span class="time">9:00 PM</span><span class="spot">Lan Kwai Fong / Ozone Bar</span><br>LKF for bar hopping, or Ozone at the Ritz (118th floor) for the highest bar on earth. Dress code at Ozone, cocktails ~$25<span class="tip">💡 Ozone is worth it once for the view. Go for one drink</span></li>
+</ul></div>
+</div>
 </div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1513622470522-26c3c8a854bc?w=800&q=80" alt="Big Buddha Hong Kong">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 3 · Wed Mar 25</div>
 <div class="day-title">Lantau Island → Horse Racing 🐎📸</div>
 <div class="day-desc">Morning: MTR from Olympic to Tung Chung (20 min direct). Ngong Ping 360 cable car to Big Buddha — shoot from the bottom of the stairs looking up for scale. Po Lin Monastery. Afternoon: Bus to Tai O fishing village — stilt houses over water, drying fish, weathered faces. Documentary photography gold. Use Classic Chrome or Acros B&W on Fuji. Evening: Happy Valley Racecourse for "Happy Wednesday" night races. Gates 5:15 PM, first race 7:15 PM. Entry $10 HKD (~$1.30). Beer Garden section, bet on a lucky number. Lit racecourse surrounded by skyscrapers = incredible photo.</div>
-<div class="tags"><span class="tag culture">🏛 Big Buddha</span><span class="tag adventure">📸 Tai O Village</span><span class="tag party">🐎 Horse Racing</span></div>
+<div class="tags"><span class="tag culture">🏛 Big Buddha</span><span class="tag adventure">📸 Tai O Village</span><span class="tag party">🐎 Horse Racing</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">MTR Olympic → Tung Chung</span><br>Direct line, 20 min. Grab breakfast at the mall near Tung Chung station</li>
+<li><span class="time">9:00 AM</span><span class="spot">Ngong Ping 360 Cable Car</span><br>25 min ride over mountains and ocean. Window seat for photos<span class="photo-tip">📸 Shoot through the glass on the way up — mountains, water, planes landing</span></li>
+<li><span class="time">10:00 AM</span><span class="spot">Tian Tan Buddha + Po Lin Monastery</span><br>268 steps up to the Big Buddha. Free entry<span class="photo-tip">📸 Shoot from the bottom of the stairs looking up — shows the scale. Wide angle</span></li>
+<li><span class="time">12:00 PM</span><span class="spot">Bus to Tai O Fishing Village</span><br>Bus 21 from Ngong Ping, ~20 min. Stilt houses over water, drying fish, weathered faces. Take your time here<span class="photo-tip">📸 Documentary photography gold. Classic Chrome or Acros B&W. Shoot the textures, the hands, the reflections in the water</span></li>
+<li><span class="time">2:00 PM</span><span class="spot">Lunch in Tai O</span><br>Fresh seafood, grilled fish balls, shrimp paste. Eat by the water</li>
+<li><span class="time">3:30 PM</span><span class="spot">Head back to Kowloon</span><br>Bus → Tung Chung → MTR back. Rest at hotel before evening</li>
+<li><span class="time">5:15 PM</span><span class="spot">Happy Valley Racecourse 🐎</span><br>MTR to Happy Valley (Causeway Bay + walk). Gates open 5:15 PM. Entry $10 HKD ($1.30). Get a tourist badge at the gate for members' area access<span class="tip">💡 Bring cash for betting. Minimum bet $10 HKD. Just pick a lucky number</span></li>
+<li><span class="time">7:15 PM</span><span class="spot">First Race + Beer Garden</span><br>Beer Garden section is the vibe. Cheap drinks, big screens, electric atmosphere<span class="photo-tip">📸 Lit racecourse surrounded by skyscrapers. Velvia film sim, wide angle from the stands</span></li>
+</ul></div>
+</div>
 </div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=800&q=80" alt="Rock climbing">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 4 · Thu Mar 26</div>
 <div class="day-title">Rock Climbing & Last Night 🧗📸</div>
 <div class="day-desc">Morning: Ferry to Tung Lung Island from Sam Ka Tsuen (30 min). Sea cliff climbing above the South China Sea — bolted sport routes 15-25m, beginner to advanced. Insane photo backdrop. Rent gear at Vertical shop in Mong Kok the day before, or join a group via Hong Kong Climbing Facebook group. Afternoon: MTR back, West Kowloon Cultural District (M+ Museum, free), ICC reflection pool at sunset. Evening: Sham Shui Po for authentic street food + neon, or hotpot in Mong Kok. Last walk through the neon streets — shoot everything.</div>
-<div class="tags"><span class="tag adventure">🧗 Rock Climbing</span><span class="tag culture">🎨 M+ Museum</span><span class="tag food">🍜 Street Food</span></div>
+<div class="tags"><span class="tag adventure">🧗 Rock Climbing</span><span class="tag culture">🎨 M+ Museum</span><span class="tag food">🍜 Street Food</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">Day Before (Wed)</span><span class="spot">Prep: Rent Gear</span><br>Visit Vertical shop in Mong Kok — rent climbing shoes + harness. Check Hong Kong Climbing Facebook group for a partner/group going to Tung Lung Thursday<span class="tip">💡 If no group available, backup plan: Attic V or Verm City indoor climbing gym ($20-25 day pass, gear included)</span></li>
+<li><span class="time">7:30 AM</span><span class="spot">Ferry to Tung Lung Island</span><br>MTR to Yau Tong → minibus to Sam Ka Tsuen pier → 30 min ferry. First ferry ~8:30 AM weekdays</li>
+<li><span class="time">9:30 AM</span><span class="spot">Rock Climbing — Sea Cliffs 🧗</span><br>Bolted sport routes, 15-25m walls. Beginner to advanced. Climbing above the South China Sea<span class="photo-tip">📸 Insane backdrop. Have your partner shoot you on the wall with the ocean behind. ProNeg Std, fast shutter 1/1000+</span></li>
+<li><span class="time">1:00 PM</span><span class="spot">Lunch on the island</span><br>Bring snacks/water — limited food options on Tung Lung. Small shop near the pier</li>
+<li><span class="time">2:30 PM</span><span class="spot">Ferry back + MTR to West Kowloon</span><br>Clean up at hotel, then walk to West Kowloon Cultural District (near Olympic)</li>
+<li><span class="time">4:00 PM</span><span class="spot">M+ Museum</span><br>Free entry. World-class contemporary art. The building itself is stunning<span class="photo-tip">📸 Shoot the architecture from the waterfront park</span></li>
+<li><span class="time">5:30 PM</span><span class="spot">ICC Reflection Pool at Sunset</span><br>Walking distance from M+. The ICC tower reflected in the pool<span class="photo-tip">📸 Golden hour money shot. Get low to the water</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Last Night: Sham Shui Po</span><br>1 MTR stop from Olympic. Authentic street food, neon signs, dai pai dongs. The real, unpolished Hong Kong. Last walk through the neon streets — shoot everything<span class="photo-tip">📸 Classic Chrome, ISO 1600, wide open. This is your last night — don't hold back</span></li>
+</ul></div>
+</div>
 </div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80" alt="Hong Kong morning">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 5 · Fri Mar 27</div>
 <div class="day-title">Hong Kong → Hanoi ✈️</div>
 <div class="day-desc">Last breakfast: pineapple bun (菠蘿包) + Hong Kong milk tea at any cha chaan teng near Olympic. MTR to Tung Chung → Airport Express (~35 min total). Fly to Hanoi.</div>
-<div class="tags"><span class="tag adventure">✈️ Travel Day</span><span class="tag food">🍞 Pineapple Bun</span></div>
+<div class="tags"><span class="tag adventure">✈️ Travel Day</span><span class="tag food">🍞 Pineapple Bun</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">Last Breakfast</span><br>Pineapple bun (菠蘿包) + Hong Kong milk tea at any cha chaan teng near Olympic. Kam Wah Cafe if nearby</li>
+<li><span class="time">9:30 AM</span><span class="spot">MTR to Airport</span><br>Olympic → Tung Chung line → Airport Express. ~35 min total. Or take the Airport Express from Kowloon station (10 min walk from Olympic)</li>
+<li><span class="time">12:00 PM</span><span class="spot">Fly to Hanoi ✈️</span><br>~2.5 hr flight. You have this booked already</li>
+</ul></div>
+</div>
 </div>
 </div>
 
@@ -185,53 +248,94 @@ h1{font-size:1.6rem;text-align:center;padding:20px 12px 4px;background:linear-gr
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80" alt="Hanoi Old Quarter">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 1 · Mar 27</div>
 <div class="day-title">Arrive in Hanoi</div>
 <div class="day-desc">Land from Hong Kong. Check into your hotel in the Old Quarter. Wander the narrow streets, try egg coffee at Café Giang, eat phở on a tiny plastic stool. Get your bearings.</div>
 <div class="tags"><span class="tag food">🍜 Street Food</span><span class="tag culture">🏛 Culture</span></div>
-<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Old+Quarter+Hanoi&checkin=2026-03-27&checkout=2026-03-28" target="_blank">🏨 Book Hanoi Hotel</a></div></div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Old+Quarter+Hanoi&checkin=2026-03-27&checkout=2026-03-28" target="_blank">🏨 Book Hanoi Hotel</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">3:00 PM</span><span class="spot">Land in Hanoi</span><br>Grab a SIM card at the airport (~$5 for 30 days unlimited data). Grab taxi or Grab car to Old Quarter (~$15, 45 min)</li>
+<li><span class="time">4:30 PM</span><span class="spot">Check into Old Quarter hotel</span><br>Drop bags, walk the narrow streets. Get lost — that's the point</li>
+<li><span class="time">5:30 PM</span><span class="spot">Egg Coffee at Café Giang</span><br>39 Nguyen Huu Huan. The original egg coffee spot. Creamy, sweet, like liquid tiramisu<span class="photo-tip">📸 The tiny upstairs seating area overlooking the alley is photogenic</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Phở on a Plastic Stool</span><br>Find any busy corner spot — the more plastic stools on the sidewalk, the better the phở. ~$1.50</li>
+<li><span class="time">8:30 PM</span><span class="spot">Bia Hoi Corner</span><br>Junction of Ta Hien and Luong Ngoc Quyen. Cheapest beer in the world — $0.25 a glass. Sit on tiny chairs, meet other travelers</li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1570366404839-173099e1cd86?w=800&q=80" alt="Night bus Vietnam">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 2 · Mar 28</div>
 <div class="day-title">Hanoi → Night Bus to Ha Giang</div>
 <div class="day-desc">Explore Hanoi during the day — Temple of Literature, Hoan Kiem Lake, train street. Evening: catch the night bus to Ha Giang (~7hrs, arrive early morning). Your tour operator usually arranges this.</div>
 <div class="tags"><span class="tag culture">🏛 Culture</span><span class="tag adventure">🚌 Night Bus</span></div>
-<div class="book-btns"><a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ Book Ha Giang Tour (includes bus)</a></div></div>
+<div class="book-btns"><a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ Book Ha Giang Tour (includes bus)</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">Temple of Literature</span><br>Vietnam's first university (1070 AD). Beautiful courtyards and gardens<span class="photo-tip">📸 Morning light through the gates. Classic Chrome</span></li>
+<li><span class="time">10:00 AM</span><span class="spot">Hoan Kiem Lake + Old Quarter Walk</span><br>Circle the lake. Visit Ngoc Son Temple on the island. Then weave through the 36 streets of the Old Quarter</li>
+<li><span class="time">12:00 PM</span><span class="spot">Bún Chả Lunch</span><br>Bún chả Hương Liên (the Obama spot) or any local place. Grilled pork + noodles + herbs. The Hanoi dish</li>
+<li><span class="time">2:00 PM</span><span class="spot">Train Street</span><br>Trains pass through a narrow residential alley twice daily. Check schedule — usually around 3:30 PM and 7:30 PM<span class="photo-tip">📸 Stand back, shoot the train filling the entire alley. Wide angle, fast shutter</span></li>
+<li><span class="time">5:00 PM</span><span class="spot">Pack + Rest</span><br>Grab dinner near the hostel. Pack light for Ha Giang — leave extra bags at your Hanoi hotel</li>
+<li><span class="time">8:00 PM</span><span class="spot">Night Bus to Ha Giang 🚌</span><br>~7 hours, sleeper bus. Your tour operator usually arranges pickup. Arrive early morning<span class="tip">💡 Bring a neck pillow, earplugs, and a light jacket — AC is aggressive</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80" alt="Ha Giang Loop">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Days 3-5 · Mar 29-31</div>
 <div class="day-title">Ha Giang Loop 🏍️</div>
 <div class="day-desc">The highlight of Vietnam. 3 days riding through insane mountain passes, rice terraces, and cliff roads along the Chinese border. Ma Pi Leng Pass is one of the most beautiful roads on Earth. Stay in homestays, eat with locals. Unforgettable.</div>
 <div class="tags"><span class="tag adventure">🏍️ Motorbike</span><span class="tag nature">🏔 Mountains</span><span class="tag culture">🏘 Homestay</span></div>
 <div class="book-btns"><a class="book-btn tour" href="https://www.instagram.com/qtmotorbikesandtours/" target="_blank">🏍️ QT Motorbikes (Instagram)</a>
-<a class="book-btn tour" href="https://www.instagram.com/jasminehostelhagiang/" target="_blank">🏍️ Jasmine Hostel Tours</a></div></div>
+<a class="book-btn tour" href="https://www.instagram.com/jasminehostelhagiang/" target="_blank">🏍️ Jasmine Hostel Tours</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">Day 1 — Mar 29</span><span class="spot">Ha Giang → Yen Minh → Dong Van</span><br>Pick up bikes, meet your guide, start riding. Heaven's Gate pass, Lung Cu flag tower (northernmost point of Vietnam, Chinese border). Homestay in Dong Van<span class="photo-tip">📸 Endless mountain vistas. Shoot from the back of the bike or at every stop. Classic Chrome for the greens and mist</span></li>
+<li><span class="time">Day 2 — Mar 30</span><span class="spot">Dong Van → Ma Pi Leng → Meo Vac</span><br>MA PI LENG PASS — one of the most beautiful roads on Earth. Cliff road carved into the mountainside above the Nho Que River. Tu San Canyon viewpoint. Homestay in Meo Vac<span class="photo-tip">📸 This is the shot of the trip. River 800m below, road hugging the cliff. Shoot wide, include the road for scale</span></li>
+<li><span class="time">Day 3 — Mar 31</span><span class="spot">Meo Vac → Du Gia → Ha Giang</span><br>Waterfall stops, rice terraces, local markets. Arrive back in Ha Giang town by evening. Celebrate with the group<span class="tip">💡 Bring cash — ATMs are scarce on the loop. Homestays are basic but authentic. Embrace it</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80" alt="Hanoi">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 6 · Apr 1</div>
 <div class="day-title">Ha Giang → Hanoi → Fly to HCMC</div>
 <div class="day-desc">Early morning bus back to Hanoi. Catch your afternoon/evening flight to Ho Chi Minh City (~2hrs). Check in, hit the Bui Vien walking street for a beer.</div>
 <div class="tags"><span class="tag adventure">✈️ Travel Day</span><span class="tag party">🍻 Nightlife</span></div>
 <div class="book-btns"><a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Hanoi+to+Ho+Chi+Minh+City+April+1+2026" target="_blank">✈️ Book HAN→SGN Flight</a>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=District+1+Ho+Chi+Minh+City&checkin=2026-04-01&checkout=2026-04-04" target="_blank">🏨 Book HCMC Hotel</a></div></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=District+1+Ho+Chi+Minh+City&checkin=2026-04-01&checkout=2026-04-04" target="_blank">🏨 Book HCMC Hotel</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">6:00 AM</span><span class="spot">Bus Ha Giang → Hanoi</span><br>~7 hours. Tour operator arranges. Sleep on the bus, you earned it</li>
+<li><span class="time">1:00 PM</span><span class="spot">Arrive Hanoi</span><br>Grab your stored bags from the hotel. Quick shower + change</li>
+<li><span class="time">3:00 PM</span><span class="spot">Last Hanoi meal</span><br>One more phở or bún chả. Stock up on Vietnamese coffee to bring home</li>
+<li><span class="time">5:00 PM</span><span class="spot">Fly to Ho Chi Minh City ✈️</span><br>~2 hour flight. VietJet or Vietnam Airlines</li>
+<li><span class="time">8:00 PM</span><span class="spot">Check into District 1 + Bui Vien Walking Street</span><br>The backpacker party street. Cheap beer, loud music, chaos. Good first night energy<span class="tip">💡 District 1 is the best base — walking distance to everything</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80" alt="HCMC">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Days 7-8 · Apr 2-3</div>
 <div class="day-title">Ho Chi Minh City</div>
 <div class="day-desc">War Remnants Museum (heavy but essential), Ben Thanh Market, Cu Chi Tunnels day trip, rooftop bars in District 1. Vietnamese coffee is next level. Try bánh mì from a street cart — best sandwich on earth for $1.</div>
-<div class="tags"><span class="tag culture">🏛 History</span><span class="tag food">🥖 Bánh Mì</span><span class="tag party">🍸 Rooftop Bars</span></div>
+<div class="tags"><span class="tag culture">🏛 History</span><span class="tag food">🥖 Bánh Mì</span><span class="tag party">🍸 Rooftop Bars</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">Day 1 — Apr 2</span><span class="spot">War Remnants Museum</span><br>Heavy but essential. Agent Orange exhibit will stay with you. Then walk to Reunification Palace and Notre-Dame Cathedral<span class="photo-tip">📸 The museum courtyard has tanks and helicopters. Powerful compositions</span></li>
+<li><span class="time">12:00 PM</span><span class="spot">Bánh Mì</span><br>Bánh Mì Huỳnh Hoa (26 Le Thi Rieng) — best sandwich on earth for $2. The line is worth it</li>
+<li><span class="time">2:00 PM</span><span class="spot">Ben Thanh Market</span><br>Souvenirs, street food, chaos. Bargain hard — start at 50% of asking price</li>
+<li><span class="time">6:00 PM</span><span class="spot">Rooftop Bars</span><br>Saigon Saigon Bar at the Caravelle, or Chill Skybar. Sunset cocktails overlooking the city</li>
+<li><span class="time">Day 2 — Apr 3</span><span class="spot">Cu Chi Tunnels Day Trip</span><br>Half-day tour (~$15-20 with transport). Underground tunnel network from the Vietnam War. You can crawl through sections. Mind-blowing engineering</li>
+<li><span class="time">3:00 PM</span><span class="spot">Vietnamese Coffee Workshop or Café Apartment</span><br>42 Nguyen Hue — an entire apartment building converted into cafes on every floor. Very photogenic<span class="photo-tip">📸 Shoot the building facade from across the street, then explore each floor</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Last dinner in Vietnam</span><br>Cơm tấm (broken rice) or hotpot. Hit Bui Vien one more time</li>
+</ul></div>
+</div>
 </div>
 </div>
 
@@ -240,113 +344,200 @@ h1{font-size:1.6rem;text-align:center;padding:20px 12px 4px;background:linear-gr
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800&q=80" alt="Bangkok">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 9 · Apr 4</div>
 <div class="day-title">Fly to Bangkok</div>
 <div class="day-desc">Land in Bangkok. Check into Khao San Road area or Sukhumvit. Grand Palace, Wat Pho (reclining Buddha), street food on Yaowarat (Chinatown). Pad thai, mango sticky rice, Thai iced tea.</div>
 <div class="tags"><span class="tag culture">🏛 Temples</span><span class="tag food">🍜 Street Food</span></div>
-<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Khao+San+Road+Bangkok&checkin=2026-04-04&checkout=2026-04-07" target="_blank">🏨 Book Bangkok Hotel</a></div></div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Khao+San+Road+Bangkok&checkin=2026-04-04&checkout=2026-04-07" target="_blank">🏨 Book Bangkok Hotel</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">10:00 AM</span><span class="spot">Fly HCMC → Bangkok</span><br>~2 hour flight. You have this booked</li>
+<li><span class="time">1:00 PM</span><span class="spot">Check into Khao San or Sukhumvit</span><br>Khao San = backpacker vibes, Sukhumvit = more upscale. Both are solid bases</li>
+<li><span class="time">3:00 PM</span><span class="spot">Grand Palace + Wat Pho</span><br>Grand Palace is jaw-dropping (dress code: cover knees + shoulders). Wat Pho has the massive reclining Buddha + best Thai massage school ($10 for 1 hr)<span class="photo-tip">📸 Golden spires, mosaic details. Velvia film sim for the colors</span></li>
+<li><span class="time">6:00 PM</span><span class="spot">Yaowarat (Chinatown) Street Food</span><br>The best street food strip in Bangkok. Pad thai, mango sticky rice, grilled seafood, Thai iced tea. Walk and eat<span class="photo-tip">📸 Neon Chinese signs + street food smoke + crowds. Classic Chrome, wide open</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80" alt="Bangkok temples">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 10 · Apr 5</div>
 <div class="day-title">Bangkok — Explore</div>
 <div class="day-desc">Chatuchak Weekend Market (if Saturday/Sunday), floating markets, rooftop bar at sunset (Sky Bar or Octave). Bangkok nightlife is legendary — RCA, Sukhumvit Soi 11, or Khao San Road.</div>
-<div class="tags"><span class="tag food">🛍 Markets</span><span class="tag party">🌃 Nightlife</span></div>
+<div class="tags"><span class="tag food">🛍 Markets</span><span class="tag party">🌃 Nightlife</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">9:00 AM</span><span class="spot">Chatuchak Weekend Market</span><br>15,000+ stalls. Everything from vintage clothes to street food to live animals. Go early before the heat<span class="tip">💡 Apr 5 is a Saturday — Chatuchak is open! Don't miss it</span></li>
+<li><span class="time">1:00 PM</span><span class="spot">Lunch + Rest</span><br>Escape the heat. Thai iced tea at any cafe. Or foot massage ($5/hr)</li>
+<li><span class="time">4:00 PM</span><span class="spot">Wat Arun</span><br>Temple of Dawn. Cross the river by boat ($0.50). Climb the steep stairs for the view<span class="photo-tip">📸 Shoot from across the river at golden hour — the temple glows</span></li>
+<li><span class="time">6:00 PM</span><span class="spot">Rooftop Sunset</span><br>Sky Bar (Lebua, from Hangover 2) or Octave Rooftop. Cocktails with 360° city views</li>
+<li><span class="time">9:00 PM</span><span class="spot">Bangkok Nightlife</span><br>Khao San Road (backpacker chaos), RCA (clubs), or Sukhumvit Soi 11 (bars). Bangkok goes late</li>
+</ul></div>
+</div>
 </div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1604593904805-0379ddff1e63?w=800&q=80" alt="Skydiving">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 11 · Apr 6</div>
 <div class="day-title">Skydive Pattaya 🪂</div>
 <div class="day-desc">Day trip to Sriracha (~1.5hrs from Bangkok). Tandem jump from 13,000ft — 60 seconds of freefall at 125mph with ocean views. Back to Bangkok by evening.</div>
 <div class="tags"><span class="tag adventure">🪂 Skydive</span><span class="tag adventure">⚡ Adrenaline</span></div>
-<div class="book-btns"><a class="book-btn activity" href="https://thaiskyadventures.com" target="_blank">🪂 Book Skydive (~$300)</a></div></div>
+<div class="book-btns"><a class="book-btn activity" href="https://thaiskyadventures.com" target="_blank">🪂 Book Skydive (~$300)</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">7:00 AM</span><span class="spot">Taxi/Grab to Thai Sky Adventures</span><br>Sriracha, ~1.5 hrs from Bangkok. Book a morning slot for the best weather and light</li>
+<li><span class="time">9:00 AM</span><span class="spot">Briefing + Gear Up</span><br>30 min safety briefing, harness fitting, meet your tandem instructor</li>
+<li><span class="time">10:00 AM</span><span class="spot">Jump! 🪂</span><br>20-min scenic ride to 13,000ft. 60 seconds of freefall at 125mph. Parachute opens at 5,000ft — 5 min floating down with ocean views<span class="photo-tip">📸 Pay for the video/photo package (~$100 extra) — you can't shoot this yourself. Worth every penny</span></li>
+<li><span class="time">11:30 AM</span><span class="spot">Certificate + Celebrate</span><br>Get your jump certificate. Review footage. Adrenaline will keep you buzzing for hours</li>
+<li><span class="time">1:00 PM</span><span class="spot">Head back to Bangkok</span><br>Grab lunch in Sriracha or on the way back. Chill evening — rest up for Phuket tomorrow</li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80" alt="Phang Nga Bay">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 12 · Apr 7</div>
 <div class="day-title">Fly to Phuket</div>
 <div class="day-desc">Morning flight to Phuket (~1hr). Check in near Kata or Patong Beach. Afternoon: chill at the beach or explore Phuket Old Town.</div>
 <div class="tags"><span class="tag beach">🏖 Beach</span><span class="tag culture">🏘 Old Town</span></div>
 <div class="book-btns"><a class="book-btn flight" href="https://www.google.com/travel/flights/search?q=Bangkok+to+Phuket+April+7+2026" target="_blank">✈️ Book BKK→HKT Flight</a>
-<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Kata+Beach+Phuket&checkin=2026-04-07&checkout=2026-04-11" target="_blank">🏨 Book Phuket Hotel</a></div></div>
+<a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Kata+Beach+Phuket&checkin=2026-04-07&checkout=2026-04-11" target="_blank">🏨 Book Phuket Hotel</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">Fly Bangkok → Phuket</span><br>~1 hr flight. AirAsia or Nok Air</li>
+<li><span class="time">10:00 AM</span><span class="spot">Check in near Kata Beach</span><br>Kata over Patong — better beach, less sleazy, still has nightlife</li>
+<li><span class="time">12:00 PM</span><span class="spot">Beach + Lunch</span><br>Chill at Kata Beach. Seafood lunch at a beachfront restaurant</li>
+<li><span class="time">3:00 PM</span><span class="spot">Phuket Old Town</span><br>Grab or tuk-tuk to Old Town. Colorful Sino-Portuguese architecture, street art, cafes<span class="photo-tip">📸 Soi Romanee — the most colorful street. Classic Neg film sim</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Sunset dinner</span><br>Promthep Cape for sunset, or eat at a cliffside restaurant overlooking the Andaman Sea</li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=800&q=80" alt="Phang Nga Bay James Bond Island">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 13 · Apr 8</div>
 <div class="day-title">Phang Nga Bay 🚤</div>
 <div class="day-desc">Full day longtail boat tour — limestone karsts rising from emerald water, James Bond Island, kayaking through sea caves, hidden lagoons. This is Thailand's Ha Long Bay but better. Book a small-group tour for ~$40-60.</div>
 <div class="tags"><span class="tag nature">🏝 Islands</span><span class="tag adventure">🛶 Kayaking</span></div>
-<div class="book-btns"><a class="book-btn tour" href="https://www.google.com/search?q=phang+nga+bay+tour+from+phuket+book" target="_blank">🚤 Book Phang Nga Tour</a></div></div>
+<div class="book-btns"><a class="book-btn tour" href="https://www.google.com/search?q=phang+nga+bay+tour+from+phuket+book" target="_blank">🚤 Book Phang Nga Tour</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">7:00 AM</span><span class="spot">Pickup from hotel</span><br>Book a small-group longtail boat tour (~$40-60). Pickup included</li>
+<li><span class="time">9:00 AM</span><span class="spot">James Bond Island</span><br>The iconic limestone needle from The Man with the Golden Gun<span class="photo-tip">📸 Shoot from the water for the classic angle. The karsts are unreal</span></li>
+<li><span class="time">11:00 AM</span><span class="spot">Sea Cave Kayaking</span><br>Paddle through collapsed cave systems into hidden lagoons. Monkeys, eagles, mangroves<span class="photo-tip">📸 Inside the caves looking out — the light contrast is magical</span></li>
+<li><span class="time">1:00 PM</span><span class="spot">Lunch on Koh Panyee</span><br>Floating Muslim fishing village. Lunch at a stilted restaurant over the water</li>
+<li><span class="time">3:00 PM</span><span class="spot">Swim + More Islands</span><br>Snorkeling stops, beach time, more karst views</li>
+<li><span class="time">5:00 PM</span><span class="spot">Return to hotel</span><br>Sunset from the boat on the way back. Rest up</li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1474181628636-7f15da29cf19?w=800&q=80" alt="Khao Sok">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 14 · Apr 9</div>
 <div class="day-title">Khao Sok National Park 🏕</div>
 <div class="day-desc">Drive to Khao Sok (~3hrs from Phuket). Sleep in floating bungalows on Cheow Lan Lake — surrounded by ancient rainforest and limestone cliffs. Night safari, kayaking, swimming in the lake. Magical.</div>
 <div class="tags"><span class="tag nature">🌿 Jungle</span><span class="tag adventure">🏕 Floating Bungalow</span></div>
-<div class="book-btns"><a class="book-btn hotel" href="https://www.khaosokdiscovery.com" target="_blank">🏠 Book Floating Bungalow</a></div></div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.khaosokdiscovery.com" target="_blank">🏠 Book Floating Bungalow</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">7:00 AM</span><span class="spot">Drive to Khao Sok</span><br>~3 hrs from Phuket. Arrange transfer through your bungalow booking</li>
+<li><span class="time">10:00 AM</span><span class="spot">Longtail boat to Cheow Lan Lake</span><br>30 min boat ride into the lake. Floating bungalows surrounded by 160-million-year-old rainforest and limestone cliffs<span class="photo-tip">📸 The approach by boat is the shot — mist, cliffs, still water. ProNeg Hi film sim</span></li>
+<li><span class="time">12:00 PM</span><span class="spot">Lunch at the bungalow</span><br>Included with most bookings. Thai food served on the floating platform</li>
+<li><span class="time">2:00 PM</span><span class="spot">Kayaking + Swimming</span><br>Explore the lake by kayak. Swim in the warm water surrounded by jungle</li>
+<li><span class="time">5:00 PM</span><span class="spot">Sunset from the bungalow</span><br>Watch the light change on the cliffs from your floating deck<span class="photo-tip">📸 Golden hour reflections on the still lake. This might be the most peaceful photo of the trip</span></li>
+<li><span class="time">7:00 PM</span><span class="spot">Night Safari</span><br>Boat tour spotting wildlife — hornbills, gibbons, maybe elephants at the water's edge. Flashlights only</li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&q=80" alt="Surfing Phuket">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 15 · Apr 10</div>
 <div class="day-title">Surf Day — Kata Beach 🏄</div>
 <div class="day-desc">Back to Phuket. Surf lesson at Kata Beach — beginner-friendly waves, board rentals everywhere (~$10-15/hr). Afternoon: Thai massage on the beach. Last night in Phuket — Bangla Road for the experience.</div>
-<div class="tags"><span class="tag adventure">🏄 Surfing</span><span class="tag beach">🏖 Beach</span><span class="tag party">🌃 Bangla Road</span></div>
+<div class="tags"><span class="tag adventure">🏄 Surfing</span><span class="tag beach">🏖 Beach</span><span class="tag party">🌃 Bangla Road</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">Transfer back to Phuket</span><br>~3 hrs from Khao Sok. Or arrange with bungalow for morning boat + van</li>
+<li><span class="time">11:00 AM</span><span class="spot">Surf Lesson at Kata Beach 🏄</span><br>Board rental ~$10-15/hr. Lessons ~$30 for 2 hrs. Beginner-friendly waves<span class="photo-tip">📸 Have someone shoot from the beach with a telephoto as you catch a wave</span></li>
+<li><span class="time">2:00 PM</span><span class="spot">Thai Massage on the Beach</span><br>$8-10 for a full hour. You've earned it after climbing + surfing this trip</li>
+<li><span class="time">4:00 PM</span><span class="spot">Beach Chill</span><br>Last afternoon in Phuket. Swim, read, nap</li>
+<li><span class="time">8:00 PM</span><span class="spot">Bangla Road, Patong</span><br>The infamous walking street. Neon, music, chaos. Experience it once<span class="tip">💡 Watch your drinks, keep valuables front-pocket, enjoy the madness</span></li>
+</ul></div>
+</div>
 </div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=800&q=80" alt="Koh Phi Phi">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 16 · Apr 11</div>
 <div class="day-title">Ferry to Koh Phi Phi 🏝</div>
 <div class="day-desc">Ferry from Phuket to Phi Phi (~2hrs, ~$15). Maya Bay (from The Beach), Pileh Lagoon snorkeling, Viking Cave. Party island at night — fire shows on the beach, cheap buckets.</div>
 <div class="tags"><span class="tag beach">🏝 Island</span><span class="tag party">🔥 Fire Shows</span><span class="tag adventure">🤿 Snorkeling</span></div>
-<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Phi+Phi&checkin=2026-04-11&checkout=2026-04-12" target="_blank">🏨 Book Phi Phi Hotel</a></div></div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Phi+Phi&checkin=2026-04-11&checkout=2026-04-12" target="_blank">🏨 Book Phi Phi Hotel</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">Ferry Phuket → Koh Phi Phi</span><br>~2 hrs, ~$15. Book at any travel agent or hotel. Arrive at Tonsai Pier</li>
+<li><span class="time">10:30 AM</span><span class="spot">Check in + Viewpoint Hike</span><br>Hike to Phi Phi Viewpoint (30 min, sweaty but worth it). Two bays from above<span class="photo-tip">📸 THE Phi Phi shot — twin bays from above. Early morning or late afternoon light is best</span></li>
+<li><span class="time">1:00 PM</span><span class="spot">Maya Bay + Pileh Lagoon</span><br>Longtail boat trip (~$15-20). Maya Bay (from The Beach), Pileh Lagoon for snorkeling in crystal water, Viking Cave</li>
+<li><span class="time">5:00 PM</span><span class="spot">Beach Sunset</span><br>Long Beach or Loh Dalum Bay. Watch the sun drop behind the karsts</li>
+<li><span class="time">8:00 PM</span><span class="spot">Beach Party Night</span><br>Fire shows on the beach, bucket drinks, bars right on the sand. Phi Phi goes hard<span class="tip">💡 Cheap buckets are fun but pace yourself — the hangover + ferry combo is brutal</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=800&q=80" alt="Koh Samui">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Days 17-18 · Apr 12-13</div>
 <div class="day-title">Koh Samui / Koh Phangan</div>
 <div class="day-desc">Ferry to Koh Samui or Koh Phangan. Beach vibes, Ang Thong Marine Park day trip (42 islands, emerald lagoons). Apr 13 = Songkran Eve — the water fights start early. Join the chaos.</div>
 <div class="tags"><span class="tag beach">🏖 Beach</span><span class="tag nature">🏝 Marine Park</span><span class="tag party">💦 Songkran</span></div>
 <div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Koh+Samui&checkin=2026-04-12&checkout=2026-04-14" target="_blank">🏨 Book Samui Hotel</a>
-<a class="book-btn flight" href="https://www.bangkokair.com" target="_blank">✈️ Book Samui→BKK (Apr 14)</a></div></div>
+<a class="book-btn flight" href="https://www.bangkokair.com" target="_blank">✈️ Book Samui→BKK (Apr 14)</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">Day 1 — Apr 12</span><span class="spot">Ferry to Koh Samui</span><br>Phi Phi → Krabi (ferry) → bus → Surat Thani → ferry to Samui. Long travel day, ~6-8 hrs total. Or fly Krabi→Samui if budget allows<span class="tip">💡 Book a combo ticket at any travel agent — they handle all connections</span></li>
+<li><span class="time">4:00 PM</span><span class="spot">Check in + Chaweng Beach</span><br>Chaweng is the main beach — long, sandy, good for swimming</li>
+<li><span class="time">7:00 PM</span><span class="spot">Fisherman's Village (Friday market if timing works)</span><br>Bophut area. Walking street, local food, chill vibes</li>
+<li><span class="time">Day 2 — Apr 13</span><span class="spot">Ang Thong Marine Park</span><br>Day trip to 42 islands — emerald lagoons, kayaking, viewpoint hike. Book through hotel ~$40-60. This is the Ha Long Bay equivalent<span class="photo-tip">📸 Emerald Lake viewpoint from above. The color of the water is unreal. Velvia film sim</span></li>
+<li><span class="time">4:00 PM</span><span class="spot">Songkran Eve 💦</span><br>Water fights start early! Chaweng Beach Road turns into a water war zone. Buy a water gun at any 7-Eleven<span class="tip">💡 Put your phone in a waterproof pouch (7-Eleven sells them). You WILL get soaked</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=80" alt="Songkran Bangkok">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 19 · Apr 14</div>
 <div class="day-title">Bangkok — Songkran 💦🔫</div>
 <div class="day-desc">Fly back to Bangkok. It's SONGKRAN — Thai New Year. The entire city turns into a massive water fight. Silom Road and Khao San Road are ground zero. You WILL get soaked. Embrace it. One of the best festivals on earth.</div>
 <div class="tags"><span class="tag party">💦 Songkran</span><span class="tag culture">🎉 Festival</span><span class="tag party">🔫 Water Fight</span></div>
-<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Silom+Bangkok&checkin=2026-04-14&checkout=2026-04-15" target="_blank">🏨 Book Bangkok Hotel</a></div></div>
+<div class="book-btns"><a class="book-btn hotel" href="https://www.booking.com/searchresults.html?ss=Silom+Bangkok&checkin=2026-04-14&checkout=2026-04-15" target="_blank">🏨 Book Bangkok Hotel</a></div>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">8:00 AM</span><span class="spot">Fly Koh Samui → Bangkok</span><br>Bangkok Airways, ~1 hr. Book early — Songkran flights sell out</li>
+<li><span class="time">11:00 AM</span><span class="spot">Check in near Silom or Khao San</span><br>Both are Songkran ground zero. Put your bags down, change into clothes you don't care about</li>
+<li><span class="time">12:00 PM</span><span class="spot">SONGKRAN 💦🔫</span><br>Hit Silom Road — the biggest water fight on earth. Thousands of people, trucks with water cannons, music everywhere. Get a water gun and join in<span class="photo-tip">📸 Waterproof your camera! GoPro or phone in waterproof case. Shoot the chaos. This is once-in-a-lifetime content</span></li>
+<li><span class="time">4:00 PM</span><span class="spot">Khao San Road Round 2</span><br>Different vibe — more backpackers, foam parties, DJs. Both spots are legendary</li>
+<li><span class="time">7:00 PM</span><span class="spot">Dry off + Last Dinner</span><br>Final pad thai, one more mango sticky rice. Reflect on 24 insane days</li>
+<li><span class="time">10:00 PM</span><span class="spot">Last Night Out</span><br>Songkran parties go all night. Your call how hard you go — you fly home tomorrow<span class="tip">💡 Pack tonight so you can sleep in. Don't miss your flight</span></li>
+</ul></div>
+</div>
 </div>
 
 <div class="day-card">
 <img src="https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=800&q=80" alt="Airport">
-<div class="day-content">
+<span class="expand-hint">TAP FOR DETAILS</span><div class="day-content">
 <div class="day-label">Day 20 · Apr 15</div>
 <div class="day-title">Fly Home → NYC ✈️</div>
 <div class="day-desc">Bangkok → NYC. Trip complete. You surfed, skydived, rode motorbikes through mountains, slept on a floating bungalow in a jungle, and got blasted with water guns on Thai New Year. Legend.</div>
-<div class="tags"><span class="tag adventure">✈️ Home</span></div>
+<div class="tags"><span class="tag adventure">✈️ Home</span>
+<div class="day-detail"><ul class="timeline">
+<li><span class="time">10:00 AM</span><span class="spot">Head to Suvarnabhumi Airport</span><br>BTS to Phaya Thai → Airport Rail Link. Or Grab taxi (~$10)</li>
+<li><span class="time">1:00 PM</span><span class="spot">Fly Bangkok → NYC ✈️</span><br>Trip complete. 3 countries, 24 days. You surfed, skydived, rode motorbikes through mountains, slept on a floating bungalow in a jungle, climbed sea cliffs, watched horse racing surrounded by skyscrapers, and got blasted with water guns on Thai New Year. Legend. 👑</li>
+</ul></div>
+</div>
 </div>
 </div>
 
@@ -438,6 +629,25 @@ function toggleMap(){
   }
   mapVisible = !mapVisible;
 }
+
+// Day card expand/collapse
+document.querySelectorAll('.day-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    // Don't toggle if clicking a link/button
+    if(e.target.closest('a')) return;
+    const detail = this.querySelector('.day-detail');
+    if(!detail) return;
+    detail.classList.toggle('open');
+    this.classList.toggle('expanded');
+    // Smooth scroll to show the detail
+    if(detail.classList.contains('open')){
+      setTimeout(() => {
+        detail.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }, 100);
+    }
+  });
+});
+
 </script>
 </body>
 </html>
