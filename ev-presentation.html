@@ -3,657 +3,593 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>EV Infrastructure — Berlin vs Prague | Final Strategy</title>
+<title>EV Infrastructure — Berlin vs Prague</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;overflow-x:hidden}
+body{font-family:'Inter',system-ui,sans-serif;background:#0a0a0a;color:#e8e8e8;overflow:hidden;height:100vh;width:100vw;cursor:default}
 
-.slide{min-height:100vh;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;padding:60px 40px;position:relative;overflow:hidden}
-@media(max-width:768px){.slide{padding:40px 20px}}
-.slide-inner{max-width:1100px;width:100%;z-index:2;position:relative}
+/* Slide container */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity 0.5s ease,transform 0.5s ease;transform:translateX(40px)}
+.slide.active{opacity:1;pointer-events:auto;transform:translateX(0)}
+.slide.prev{opacity:0;transform:translateX(-40px)}
+@media(max-width:900px){.slide{padding:32px 24px}}
 
-/* Nav dots */
-.nav-dots{position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:10px}
-.nav-dots a{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.2);display:block;transition:all 0.3s}
-.nav-dots a.active,.nav-dots a:hover{background:#00d4aa;transform:scale(1.3)}
-@media(max-width:768px){.nav-dots{right:12px}.nav-dots a{width:8px;height:8px}}
+.slide-inner{max-width:1100px;width:100%;position:relative;z-index:2}
 
-/* Progress */
-.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#00d4aa,#4da6ff);z-index:200;transition:width 0.3s}
+/* Progress bar */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#00d4aa,#4da6ff);z-index:200;transition:width 0.4s ease}
 
-/* Title slide */
-.slide-title{background:linear-gradient(135deg,#0a0a0a 0%,#0d1b2a 50%,#1b2a3d 100%)}
-.slide-title::before{content:'';position:absolute;top:-50%;right:-30%;width:800px;height:800px;background:radial-gradient(circle,rgba(0,212,170,0.08) 0%,transparent 70%);pointer-events:none}
-.slide-title::after{content:'';position:absolute;bottom:-40%;left:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,150,255,0.06) 0%,transparent 70%);pointer-events:none}
-.title-label{font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;color:#00d4aa;font-weight:600;margin-bottom:24px}
-.title-main{font-size:clamp(2.2rem,5vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:20px;background:linear-gradient(135deg,#ffffff 0%,#b0c4de 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.title-sub{font-size:clamp(1rem,2vw,1.4rem);color:#7a8a9e;font-weight:300;line-height:1.6;max-width:700px}
-.title-meta{margin-top:40px;display:flex;gap:32px;flex-wrap:wrap}
-.title-meta span{font-size:0.8rem;color:#4a5a6e;font-weight:500;display:flex;align-items:center;gap:8px}
-.title-meta span::before{content:'';width:6px;height:6px;border-radius:50%;background:#00d4aa}
+/* Slide counter */
+.slide-counter{position:fixed;bottom:24px;right:40px;font-size:0.75rem;color:#3a4a5e;font-weight:600;letter-spacing:2px;z-index:100}
+@media(max-width:900px){.slide-counter{right:20px;bottom:16px}}
 
-/* Badges */
-.city-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border-radius:40px;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:28px}
-.city-berlin{background:rgba(0,150,255,0.12);color:#4da6ff;border:1px solid rgba(0,150,255,0.2)}
-.city-prague{background:rgba(255,107,53,0.12);color:#ff8c5a;border:1px solid rgba(255,107,53,0.2)}
-.city-compare{background:rgba(0,212,170,0.12);color:#00d4aa;border:1px solid rgba(0,212,170,0.2)}
-.city-strategy{background:rgba(255,200,50,0.12);color:#ffc832;border:1px solid rgba(255,200,50,0.2)}
+/* Nav arrows */
+.nav-arrows{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:100}
+.nav-arrows button{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#7a8a9e;width:44px;height:44px;border-radius:12px;font-size:1.1rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.nav-arrows button:hover{background:rgba(255,255,255,0.12);color:#fff}
+.nav-arrows button:active{transform:scale(0.95)}
+
+/* Speaker notes */
+.notes-toggle{position:fixed;bottom:24px;left:24px;z-index:200;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#5a6a7e;padding:8px 14px;border-radius:10px;font-size:0.65rem;cursor:pointer;font-family:inherit;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s}
+.notes-toggle:hover{background:rgba(255,255,255,0.12);color:#fff}
+.notes-panel{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,10,0.97);border-top:1px solid rgba(255,200,50,0.15);padding:20px 40px;z-index:150;transform:translateY(100%);transition:transform 0.3s ease;max-height:30vh;overflow-y:auto}
+.notes-panel.open{transform:translateY(0)}
+.notes-panel p{font-size:0.82rem;color:#b0a878;line-height:1.7;max-width:900px}
+@media(max-width:900px){.notes-panel{padding:16px 20px}}
+
+/* Backgrounds */
+.bg-gradient{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+.bg-shape{position:absolute;border-radius:50%;pointer-events:none;filter:blur(100px);opacity:0.5;z-index:0}
 
 /* Typography */
-.section-title{font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:800;line-height:1.2;margin-bottom:16px}
-.section-subtitle{font-size:1rem;color:#7a8a9e;font-weight:400;line-height:1.7;margin-bottom:32px;max-width:700px}
+.label{font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;font-weight:700;margin-bottom:20px;display:inline-block;padding:6px 16px;border-radius:30px}
+.label-berlin{background:rgba(0,150,255,0.1);color:#4da6ff;border:1px solid rgba(0,150,255,0.15)}
+.label-prague{background:rgba(255,107,53,0.1);color:#ff8c5a;border:1px solid rgba(255,107,53,0.15)}
+.label-compare{background:rgba(0,212,170,0.1);color:#00d4aa;border:1px solid rgba(0,212,170,0.15)}
+.label-strategy{background:rgba(255,200,50,0.1);color:#ffc832;border:1px solid rgba(255,200,50,0.15)}
+.label-framework{background:rgba(255,255,255,0.06);color:#8a9aae;border:1px solid rgba(255,255,255,0.08)}
+
+h1{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;line-height:1.08;margin-bottom:16px}
+h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:14px}
+.subtitle{font-size:clamp(0.95rem,1.5vw,1.2rem);color:#6a7a8e;font-weight:300;line-height:1.6;max-width:680px}
+
+/* Grids */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;gap:14px}}
 
 /* Cards */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
-.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;transition:all 0.3s}
-.card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.1);transform:translateY(-2px)}
-.card-icon{font-size:1.8rem;margin-bottom:14px}
-.card-title{font-size:1rem;font-weight:700;margin-bottom:8px;color:#fff}
-.card-text{font-size:0.85rem;color:#8a9aae;line-height:1.65}
+.card{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px}
+.card-icon{font-size:1.6rem;margin-bottom:12px}
+.card h3{font-size:0.95rem;font-weight:700;margin-bottom:6px;color:#fff}
+.card p{font-size:0.8rem;color:#7a8a9e;line-height:1.6}
 
 /* Stats */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:28px 0}
-.stat{text-align:center;padding:24px 16px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.05)}
-.stat-value{font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:800;margin-bottom:4px}
-.stat-value.berlin{color:#4da6ff}
-.stat-value.prague{color:#ff8c5a}
-.stat-value.green{color:#00d4aa}
-.stat-value.gold{color:#ffc832}
-.stat-label{font-size:0.65rem;color:#6a7a8e;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{text-align:center;padding:20px 12px;background:rgba(255,255,255,0.025);border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+.stat .val{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;margin-bottom:2px}
+.stat .lbl{font-size:0.6rem;color:#5a6a7e;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.berlin{color:#4da6ff}
+.prague{color:#ff8c5a}
+.green{color:#00d4aa}
+.gold{color:#ffc832}
 
 /* Table */
-.compare-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:24px;overflow:hidden;border-radius:14px;border:1px solid rgba(255,255,255,0.06)}
-.compare-table th{background:rgba(255,255,255,0.06);padding:14px 20px;text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#7a8a9e;font-weight:700}
-.compare-table td{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.04);font-size:0.85rem;color:#b0bfcf}
-.compare-table tr:hover td{background:rgba(255,255,255,0.02)}
-.compare-table .col-berlin{color:#4da6ff}
-.compare-table .col-prague{color:#ff8c5a}
+table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);margin-top:20px;font-size:0.8rem}
+th{background:rgba(255,255,255,0.05);padding:12px 16px;text-align:left;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:#6a7a8e;font-weight:700}
+td{padding:11px 16px;border-top:1px solid rgba(255,255,255,0.03);color:#9aafbf}
 
 /* Quote */
-.quote-block{border-left:3px solid #00d4aa;padding:20px 28px;background:rgba(0,212,170,0.04);border-radius:0 14px 14px 0;margin:24px 0}
-.quote-block.orange{border-left-color:#ff8c5a;background:rgba(255,107,53,0.04)}
-.quote-block.gold{border-left-color:#ffc832;background:rgba(255,200,50,0.04)}
-.quote-text{font-size:1rem;font-style:italic;color:#c0cede;line-height:1.7}
-.quote-source{font-size:0.75rem;color:#5a6a7e;margin-top:10px;font-weight:600}
+.quote{border-left:3px solid #00d4aa;padding:16px 24px;background:rgba(0,212,170,0.04);border-radius:0 12px 12px 0;margin:20px 0}
+.quote.orange{border-left-color:#ff8c5a;background:rgba(255,107,53,0.04)}
+.quote p{font-size:0.9rem;font-style:italic;color:#b0c8d8;line-height:1.65}
+.quote .src{font-size:0.7rem;color:#4a5a6e;margin-top:8px;font-weight:600;font-style:normal}
 
-/* Insight */
-.insight{display:flex;gap:14px;padding:20px;background:rgba(0,212,170,0.06);border-radius:14px;border:1px solid rgba(0,212,170,0.1);margin-top:24px}
-.insight-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
-.insight-text{font-size:0.85rem;color:#a0b8c8;line-height:1.65}
+/* Callout */
+.callout{display:flex;gap:12px;padding:16px 20px;background:rgba(0,212,170,0.05);border-radius:12px;border:1px solid rgba(0,212,170,0.08);margin-top:20px}
+.callout .ico{font-size:1.1rem;flex-shrink:0}
+.callout p{font-size:0.8rem;color:#8ab0c0;line-height:1.6}
 
-/* Layout */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
-@media(max-width:768px){.two-col{grid-template-columns:1fr;gap:20px}}
+/* Pillar accent */
+.accent-top{position:relative}
+.accent-top::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;border-radius:3px 3px 0 0}
+.accent-blue::before{background:linear-gradient(90deg,#4da6ff,#00d4aa)}
+.accent-orange::before{background:linear-gradient(90deg,#ff8c5a,#ffc832)}
+.accent-green::before{background:linear-gradient(90deg,#00d4aa,#4da6ff)}
+.accent-gold::before{background:linear-gradient(90deg,#ffc832,#ff8c5a)}
 
-.bg-shape{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);opacity:0.4}
+/* Rec cards */
+.rec{background:rgba(255,200,50,0.03);border:1px solid rgba(255,200,50,0.08);border-radius:14px;padding:22px}
+.rec .rec-for{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.rec h3{font-size:0.95rem;font-weight:700;margin-bottom:6px;color:#fff}
+.rec p{font-size:0.78rem;color:#8a9aae;line-height:1.6}
 
-.slide-num{position:absolute;bottom:24px;right:40px;font-size:0.7rem;color:#2a3a4e;font-weight:700;letter-spacing:2px}
-@media(max-width:768px){.slide-num{right:20px;bottom:16px}}
+/* Meta tags */
+.meta{display:flex;gap:24px;flex-wrap:wrap;margin-top:32px}
+.meta span{font-size:0.75rem;color:#3a4a5e;font-weight:500;display:flex;align-items:center;gap:8px}
+.meta span::before{content:'';width:5px;height:5px;border-radius:50%;background:#00d4aa}
 
-/* Timeline */
-.timeline{position:relative;padding-left:28px}
-.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.06)}
-.timeline-item{position:relative;padding:12px 0;padding-left:20px}
-.timeline-item::before{content:'';position:absolute;left:-24px;top:18px;width:12px;height:12px;border-radius:50%;background:#1a2a3e;border:2px solid #00d4aa}
-.timeline-item .tl-title{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:4px}
-.timeline-item .tl-text{font-size:0.8rem;color:#7a8a9e;line-height:1.6}
+/* Finding card */
+.finding{border-left:3px solid;padding:20px 24px;background:rgba(255,255,255,0.025);border-radius:0 14px 14px 0;margin-bottom:16px}
+.finding h3{font-size:0.95rem;font-weight:700;margin-bottom:6px;color:#fff}
+.finding p{font-size:0.8rem;color:#7a8a9e;line-height:1.6}
 
-/* Pillar cards (strategy) */
-.pillar{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;position:relative;overflow:hidden}
-.pillar::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
-.pillar.p-econ::before{background:linear-gradient(90deg,#4da6ff,#00d4aa)}
-.pillar.p-reg::before{background:linear-gradient(90deg,#ff8c5a,#ffc832)}
-.pillar.p-work::before{background:linear-gradient(90deg,#00d4aa,#4da6ff)}
-.pillar.p-social::before{background:linear-gradient(90deg,#ffc832,#ff8c5a)}
-.pillar-num{font-size:0.65rem;color:#4a5a6e;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
-.pillar-title{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:#fff}
-.pillar-text{font-size:0.82rem;color:#8a9aae;line-height:1.65}
-
-/* Recommendation cards */
-.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:20px}
-.rec{background:rgba(255,200,50,0.04);border:1px solid rgba(255,200,50,0.1);border-radius:16px;padding:24px}
-.rec-label{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
-.rec-label.berlin{color:#4da6ff}
-.rec-label.prague{color:#ff8c5a}
-.rec-label.both{color:#00d4aa}
-.rec-title{font-size:1rem;font-weight:700;margin-bottom:8px;color:#fff}
-.rec-text{font-size:0.82rem;color:#8a9aae;line-height:1.65}
-
-/* Animations */
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.slide-inner>*{animation:fadeUp 0.6s ease-out both}
-.slide-inner>*:nth-child(2){animation-delay:0.1s}
-.slide-inner>*:nth-child(3){animation-delay:0.2s}
-.slide-inner>*:nth-child(4){animation-delay:0.3s}
-.slide-inner>*:nth-child(5){animation-delay:0.35s}
-.slide-inner>*:nth-child(6){animation-delay:0.4s}
-
-/* Speaker notes toggle */
-.speaker-toggle{position:fixed;bottom:20px;left:20px;z-index:200;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:#7a8a9e;padding:8px 16px;border-radius:10px;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:1px;text-transform:uppercase}
-.speaker-toggle:hover{background:rgba(255,255,255,0.12);color:#fff}
-.speaker-notes{display:none;margin-top:20px;padding:16px 20px;background:rgba(255,200,50,0.06);border:1px solid rgba(255,200,50,0.1);border-radius:12px;font-size:0.8rem;color:#b0a878;line-height:1.6}
-body.show-notes .speaker-notes{display:block}
+/* Closing */
+.closing-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;text-align:center;margin-bottom:16px}
+.closing-sub{text-align:center;max-width:600px;margin:0 auto;color:#6a7a8e;font-size:1rem;line-height:1.7}
 </style>
 </head>
 <body>
 
-<div class="progress" id="progress"></div>
-<nav class="nav-dots" id="navDots"></nav>
-<button class="speaker-toggle" onclick="document.body.classList.toggle('show-notes')">Speaker Notes</button>
+<div class="progress-bar" id="progressBar"></div>
+<div class="slide-counter" id="counter">01 / 15</div>
+<div class="nav-arrows">
+<button onclick="prev()" aria-label="Previous">←</button>
+<button onclick="next()" aria-label="Next">→</button>
+</div>
+<button class="notes-toggle" onclick="toggleNotes()">Notes</button>
+<div class="notes-panel" id="notesPanel"></div>
 
-<!-- ==================== SLIDE 1 — TITLE ==================== -->
-<div class="slide slide-title" id="s1">
+<div class="deck" id="deck">
+
+<!-- S1 TITLE -->
+<div class="slide active" data-notes="Opening (1 min): Our research question — why is Berlin scaling EV infrastructure faster than Prague, and what can each city learn from the other? We conducted fieldwork in both cities, interviewed local EV users, and visited key innovation sites. Today we present findings across four dimensions: economic, regulatory, workforce, and social.">
+<div class="bg-gradient" style="background:linear-gradient(135deg,#0a0a0a,#0d1b2a 60%,#1b2a3d)"></div>
+<div class="bg-shape" style="width:700px;height:700px;background:#00d4aa;top:-40%;right:-20%;opacity:0.06"></div>
+<div class="bg-shape" style="width:500px;height:500px;background:#0066dd;bottom:-30%;left:-15%;opacity:0.05"></div>
 <div class="slide-inner">
-<div class="title-label">Milestone 3 · Final Strategy Presentation</div>
-<h1 class="title-main">Scaling EV Infrastructure<br>Berlin vs Prague</h1>
-<p class="title-sub">A comparative analysis of how economic conditions, regulatory frameworks, workforce dynamics, and social factors shape the deployment of public EV charging networks across two European capitals.</p>
-<div class="title-meta">
+<div class="label label-framework">Milestone 3 · Final Strategy</div>
+<h1 style="background:linear-gradient(135deg,#fff,#b0c4de);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Scaling EV Infrastructure<br>Berlin vs Prague</h1>
+<p class="subtitle">A comparative analysis of economic, regulatory, workforce, and social factors shaping public EV charging deployment across two European capitals.</p>
+<div class="meta">
 <span>Immersive Fieldwork</span>
 <span>Comparative Analysis</span>
 <span>Strategic Implications</span>
 <span>Spring 2026</span>
 </div>
-<div class="speaker-notes">
-<strong>Opening (1 min):</strong> "Our research question: Why is Berlin scaling EV infrastructure faster than Prague — and what can each city learn from the other? We conducted fieldwork in both cities, interviewed local EV users, and visited key sites. Today we'll walk you through our findings across four dimensions: economic, regulatory, workforce, and social."
 </div>
-</div>
-<div class="slide-num">01 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 2 — RESEARCH FRAMEWORK ==================== -->
-<div class="slide" id="s2" style="background:linear-gradient(160deg,#0a0a0a,#0d1520)">
+<!-- S2 FRAMEWORK -->
+<div class="slide" data-notes="(1 min): We organized our analysis around four interconnected pillars. They aren't siloed — Prague's heritage regulations (regulatory) raise installation costs (economic) and require specialized workers (workforce), while cultural attachment to Škoda (social) reduces demand. Let's examine each.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0d1520)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">📐 Framework</div>
-<h2 class="section-title">Four Pillars of Analysis</h2>
-<p class="section-subtitle">Our comparative framework examines EV infrastructure deployment through four interconnected lenses.</p>
-<div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-<div class="pillar p-econ">
-<div class="pillar-num">Pillar 01</div>
-<div class="pillar-title">💶 Economic</div>
-<div class="pillar-text">GDP, investment capacity, funding models, cost structures, market incentives for EV adoption and charging deployment</div>
+<div class="label label-framework">📐 Analytical Framework</div>
+<h2>Four Pillars of Analysis</h2>
+<p class="subtitle">Our comparative framework examines EV infrastructure through four interconnected lenses.</p>
+<div class="grid-4">
+<div class="card accent-top accent-blue">
+<div class="card-icon">💶</div>
+<h3>Economic</h3>
+<p>GDP, investment capacity, funding models, cost structures, market incentives</p>
 </div>
-<div class="pillar p-reg">
-<div class="pillar-num">Pillar 02</div>
-<div class="pillar-title">📋 Regulatory</div>
-<div class="pillar-text">EU mandates, national policy, municipal codes, heritage protection, permitting processes, integration vs. restriction</div>
+<div class="card accent-top accent-orange">
+<div class="card-icon">📋</div>
+<h3>Regulatory</h3>
+<p>EU mandates, municipal codes, heritage protection, integration vs. restriction</p>
 </div>
-<div class="pillar p-work">
-<div class="pillar-num">Pillar 03</div>
-<div class="pillar-title">👷 Workforce</div>
-<div class="pillar-text">Technical talent, electrician capacity, training pipelines, institutional knowledge for installation and maintenance</div>
+<div class="card accent-top accent-green">
+<div class="card-icon">👷</div>
+<h3>Workforce</h3>
+<p>Technical talent, training pipelines, installation capacity, institutional knowledge</p>
 </div>
-<div class="pillar p-social">
-<div class="pillar-num">Pillar 04</div>
-<div class="pillar-title">🧑‍🤝‍🧑 Social</div>
-<div class="pillar-text">Consumer attitudes, cultural identity (Škoda vs. e-bike), public awareness, transit alternatives, adoption willingness</div>
-</div>
-</div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "We organized our analysis around four pillars. These aren't siloed — they interact. For example, Prague's heritage regulations (regulatory) directly raise installation costs (economic) and require specialized workers (workforce), while cultural attachment to Škoda (social) reduces demand. Let's look at each city through these lenses."
+<div class="card accent-top accent-gold">
+<div class="card-icon">🧑‍🤝‍🧑</div>
+<h3>Social</h3>
+<p>Consumer attitudes, cultural identity, public awareness, transit alternatives</p>
 </div>
 </div>
-<div class="slide-num">02 / 15</div>
+</div>
 </div>
 
-<!-- ==================== SLIDE 3 — ECONOMIC: BERLIN ==================== -->
-<div class="slide" id="s3" style="background:linear-gradient(160deg,#0a0a0a,#0a1520)">
-<div class="bg-shape" style="width:400px;height:400px;background:#0044aa;top:-100px;right:-100px;opacity:0.08"></div>
+<!-- S3 ECONOMIC BERLIN -->
+<div class="slide" data-notes="(1.5 min): Berlin's economic advantage starts with infrastructure cost. Post-reunification rebuilding means modern utility grids — cheaper and faster to install chargers. The lamppost model is key: under €1K per unit vs. €5-15K standalone. At EUREF, we saw battery second-life programs that generate revenue. Germany's GDP means deeper public and private investment pools.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0a1520)"></div>
+<div class="bg-shape" style="width:400px;height:400px;background:#0044aa;top:-20%;right:-10%;opacity:0.07"></div>
 <div class="slide-inner">
-<div class="city-badge city-berlin">🇩🇪 Economic Factors</div>
-<h2 class="section-title">Berlin: Investment-Ready Ecosystem</h2>
-<div class="stats-row">
-<div class="stat"><div class="stat-value berlin">€4.6T</div><div class="stat-label">Germany GDP</div></div>
-<div class="stat"><div class="stat-value berlin">70K</div><div class="stat-label">Registered EVs</div></div>
-<div class="stat"><div class="stat-value berlin">3,850</div><div class="stat-label">Public Chargers</div></div>
-<div class="stat"><div class="stat-value berlin">&lt;€1K</div><div class="stat-label">Lamppost Conversion</div></div>
+<div class="label label-berlin">🇩🇪 Economic Factors · Berlin</div>
+<h2>Investment-Ready Ecosystem</h2>
+<div class="stats">
+<div class="stat"><div class="val berlin">€4.6T</div><div class="lbl">Germany GDP</div></div>
+<div class="stat"><div class="val berlin">70K</div><div class="lbl">Registered EVs</div></div>
+<div class="stat"><div class="val berlin">3,850</div><div class="lbl">Public Chargers</div></div>
+<div class="stat"><div class="val berlin">&lt;€1K</div><div class="lbl">Lamppost Cost</div></div>
 </div>
-<div class="card-grid">
+<div class="grid-3">
 <div class="card">
 <div class="card-icon">🏗️</div>
-<div class="card-title">Post-Reunification Infrastructure</div>
-<div class="card-text">Rebuilt utility grids and wide streets lower the marginal cost of each new charging point. What Prague digs through medieval stone, Berlin installs in modern conduit.</div>
+<h3>Post-Reunification Grid</h3>
+<p>Rebuilt utility infrastructure lowers marginal cost per new charging point. Modern conduit vs. medieval stone.</p>
 </div>
 <div class="card">
 <div class="card-icon">🔋</div>
-<div class="card-title">Battery Second-Life Economics</div>
-<div class="card-text">EUREF-Campus demonstrates how reusing EV batteries for stationary storage creates a revenue pathway that offsets infrastructure costs — turning waste into grid assets.</div>
+<h3>Battery Second-Life</h3>
+<p>EUREF-Campus: retired EV batteries become stationary storage. Waste → grid asset. Revenue offsets infrastructure costs.</p>
 </div>
 <div class="card">
 <div class="card-icon">💡</div>
-<div class="card-title">Lamppost-to-Charger Model</div>
-<div class="card-text">Ubitricity's sub-€1,000 conversion cost per lamppost vs. €5,000-15,000 for a standalone station. Scalability lever for dense urban environments.</div>
+<h3>Lamppost Conversion</h3>
+<p>Ubitricity: &lt;€1K per lamppost vs. €5-15K standalone station. Sub-1-hour installation. Massive scalability lever.</p>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(1.5 min):</strong> "Berlin's economic advantage starts with infrastructure cost. Post-reunification rebuilding means modern utility grids — cheaper and faster to install chargers. The lamppost model is key: under €1K per unit vs. €5-15K standalone. At EUREF, we saw battery second-life programs that actually generate revenue. And Germany's GDP means deeper public and private investment pools."
 </div>
-</div>
-<div class="slide-num">03 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 4 — ECONOMIC: PRAGUE ==================== -->
-<div class="slide" id="s4" style="background:linear-gradient(160deg,#0a0a0a,#1a0f08)">
-<div class="bg-shape" style="width:400px;height:400px;background:#cc4400;top:-100px;left:-100px;opacity:0.06"></div>
+<!-- S4 ECONOMIC PRAGUE -->
+<div class="slide" data-notes="(1.5 min): Prague's economy is 1/14th Germany's. But the bigger issue is cost structure — installing a charger in the historic center costs 3-5× more due to heritage requirements. So chargers get pushed to the periphery. Network fragmentation (4+ apps) adds friction. The economics don't currently support dense urban deployment.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#1a0f08)"></div>
+<div class="bg-shape" style="width:400px;height:400px;background:#cc4400;top:-20%;left:-10%;opacity:0.06"></div>
 <div class="slide-inner">
-<div class="city-badge city-prague">🇨🇿 Economic Factors</div>
-<h2 class="section-title">Prague: Cost-Constrained Adaptation</h2>
-<div class="stats-row">
-<div class="stat"><div class="stat-value prague">€330B</div><div class="stat-label">Czechia GDP</div></div>
-<div class="stat"><div class="stat-value prague">~0</div><div class="stat-label">Center Chargers</div></div>
-<div class="stat"><div class="stat-value prague">4+</div><div class="stat-label">Competing Networks</div></div>
-<div class="stat"><div class="stat-value prague">3-5×</div><div class="stat-label">Higher Install Cost</div></div>
+<div class="label label-prague">🇨🇿 Economic Factors · Prague</div>
+<h2>Cost-Constrained Adaptation</h2>
+<div class="stats">
+<div class="stat"><div class="val prague">€330B</div><div class="lbl">Czechia GDP</div></div>
+<div class="stat"><div class="val prague">~0</div><div class="lbl">Center Chargers</div></div>
+<div class="stat"><div class="val prague">4+</div><div class="lbl">Competing Networks</div></div>
+<div class="stat"><div class="val prague">3-5×</div><div class="lbl">Higher Install Cost</div></div>
 </div>
-<div class="card-grid">
+<div class="grid-3">
 <div class="card">
 <div class="card-icon">🏛️</div>
-<div class="card-title">Heritage Premium</div>
-<div class="card-text">Medieval utility layouts, cobblestone streets, and heritage protection requirements multiply installation costs by 3-5× compared to modern infrastructure areas.</div>
+<h3>Heritage Premium</h3>
+<p>Medieval utility layouts and cobblestone streets multiply installation costs by 3-5× compared to modern areas.</p>
 </div>
 <div class="card">
 <div class="card-icon">🔀</div>
-<div class="card-title">Fragmented Market</div>
-<div class="card-text">PRE, EON, CEZ operate competing networks with incompatible cards/apps. No unified payment standard. This fragments investment and frustrates users.</div>
+<h3>Fragmented Market</h3>
+<p>PRE, EON, CEZ — different cards, different apps, incompatible plugs. Fragments investment and frustrates users.</p>
 </div>
 <div class="card">
 <div class="card-icon">🛒</div>
-<div class="card-title">Periphery-Pushed Model</div>
-<div class="card-text">Chargers concentrated at suburban shopping centers (Lidl, malls) where installation is cheaper — but disconnected from daily urban mobility patterns.</div>
+<h3>Periphery-Pushed</h3>
+<p>Chargers at suburban shopping centers where installation is cheaper — disconnected from daily mobility patterns.</p>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(1.5 min):</strong> "Prague's economy is 1/14th the size of Germany's. But the bigger issue is cost structure — installing a charger in the historic center costs 3-5× more due to heritage requirements. So chargers get pushed to the periphery where it's cheaper. Network fragmentation adds friction: imagine needing 4 different apps to charge your car across the city. The economics don't currently support dense urban deployment."
 </div>
-</div>
-<div class="slide-num">04 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 5 — REGULATORY: COMPARISON ==================== -->
-<div class="slide" id="s5" style="background:linear-gradient(160deg,#0a0a0a,#101820)">
+<!-- S5 REGULATORY -->
+<div class="slide" data-notes="(1.5 min): The regulatory contrast is stark. Berlin integrates and iterates. Prague restricts and studies. They banned e-scooters entirely, ban nighttime driving in the center, and heritage rules veto infrastructure changes. EU AFIR requires minimum charging density by 2030 — Berlin is on track, Prague has gaps. This is about how institutions respond to technological change.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#101820)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">📋 Regulatory Frameworks</div>
-<h2 class="section-title">Integration vs. Restriction</h2>
-<p class="section-subtitle">The two cities show fundamentally different institutional responses to new mobility technology.</p>
-<table class="compare-table">
-<thead>
-<tr><th>Regulatory Dimension</th><th class="col-berlin">🇩🇪 Berlin</th><th class="col-prague">🇨🇿 Prague</th></tr>
-</thead>
+<div class="label label-compare">📋 Regulatory Frameworks</div>
+<h2>Integration vs. Restriction</h2>
+<p class="subtitle">Two fundamentally different institutional responses to new mobility technology.</p>
+<table>
+<thead><tr><th>Dimension</th><th class="berlin">🇩🇪 Berlin</th><th class="prague">🇨🇿 Prague</th></tr></thead>
 <tbody>
-<tr><td>Policy Approach</td><td class="col-berlin">Integrate → pilot → scale</td><td class="col-prague">Restrict → study → cautiously permit</td></tr>
-<tr><td>Heritage Impact</td><td class="col-berlin">Minimal (rebuilt postwar)</td><td class="col-prague">Major constraint (UNESCO core)</td></tr>
-<tr><td>E-Scooters</td><td class="col-berlin">Regulated, operational</td><td class="col-prague">Banned citywide (Jan 2026)</td></tr>
-<tr><td>Night Driving</td><td class="col-berlin">No restrictions</td><td class="col-prague">Banned in parts of historic center</td></tr>
-<tr><td>Data Governance</td><td class="col-berlin">CityLAB open data ecosystem</td><td class="col-prague">No equivalent institution</td></tr>
-<tr><td>Charging Mandates</td><td class="col-berlin">Building codes require charging-ready</td><td class="col-prague">Limited new-build requirements</td></tr>
-<tr><td>EU AFIR Compliance</td><td class="col-berlin">On track</td><td class="col-prague">Significant gaps remain</td></tr>
+<tr><td>Policy Approach</td><td class="berlin">Integrate → pilot → scale</td><td class="prague">Restrict → study → cautiously permit</td></tr>
+<tr><td>Heritage Impact</td><td class="berlin">Minimal (rebuilt postwar)</td><td class="prague">Major constraint (UNESCO core)</td></tr>
+<tr><td>E-Scooters</td><td class="berlin">Regulated, operational</td><td class="prague">Banned citywide (Jan 2026)</td></tr>
+<tr><td>Night Driving</td><td class="berlin">No restrictions</td><td class="prague">Banned in historic center</td></tr>
+<tr><td>Data Governance</td><td class="berlin">CityLAB open data</td><td class="prague">No equivalent institution</td></tr>
+<tr><td>Building Codes</td><td class="berlin">EV-ready parking required</td><td class="prague">Limited requirements</td></tr>
+<tr><td>EU AFIR Status</td><td class="berlin">On track</td><td class="prague">Significant gaps</td></tr>
 </tbody>
 </table>
-<div class="insight">
-<span class="insight-icon">⚠️</span>
-<span class="insight-text"><strong>Pattern:</strong> Prague's institutional response to new mobility technology is consistently restriction-first. E-scooter ban, night driving ban, heritage vetoes. EV charging deployment faces the same institutional headwinds.</span>
 </div>
-<div class="speaker-notes">
-<strong>(1.5 min):</strong> "The regulatory contrast is stark. Berlin's approach is integration-first: pilot it, test it, scale what works. CityLAB embodies this. Prague's pattern is restriction-first: they banned e-scooters entirely, ban nighttime driving in the center, and heritage rules effectively veto infrastructure changes. The EU's AFIR regulation requires minimum charging density by 2030 — Berlin is on track, Prague has significant gaps. This isn't just about EVs — it's about how each city's institutions respond to technological change."
-</div>
-</div>
-<div class="slide-num">05 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 6 — REGULATORY DEEP DIVE ==================== -->
-<div class="slide" id="s6" style="background:linear-gradient(160deg,#0a0a0a,#0a1218)">
+<!-- S6 REGULATORY DEEP DIVE -->
+<div class="slide" data-notes="(1 min): Berlin has a multi-level regulatory stack — federal strategy, state mobility law, municipal building codes. Prague has national ambition but municipal reality is dominated by heritage protection. The lamppost strategy is Prague's best regulatory workaround: no excavation, no permanent changes, potentially bypassing heritage objections.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0a1218)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">📋 Regulatory Deep Dive</div>
-<h2 class="section-title">The EU Mandate Challenge</h2>
-<p class="section-subtitle">Both cities must comply with EU Alternative Fuels Infrastructure Regulation (AFIR) — but their starting points are vastly different.</p>
-<div class="two-col">
-<div>
-<div class="card" style="border-color:rgba(0,150,255,0.15)">
+<div class="label label-compare">📋 Regulatory Stacks</div>
+<h2>Multi-Level Policy Comparison</h2>
+<div class="grid-2">
+<div class="card" style="border-color:rgba(0,150,255,0.12)">
 <div class="card-icon">🇩🇪</div>
-<div class="card-title">Berlin's Regulatory Stack</div>
-<div class="card-text">
-• <strong>Federal:</strong> Masterplan Ladeinfrastruktur II — national charging strategy<br><br>
-• <strong>State:</strong> Berlin Mobilitätsgesetz — legally embeds sustainable transport<br><br>
-• <strong>Municipal:</strong> Building codes require EV-ready parking in new developments<br><br>
-• <strong>Innovation:</strong> CityLAB provides open-data tools for demand-responsive planning
+<h3>Berlin's Stack</h3>
+<p>
+<strong class="berlin">Federal:</strong> Masterplan Ladeinfrastruktur II<br><br>
+<strong class="berlin">State:</strong> Berlin Mobilitätsgesetz — legally embeds sustainable transport<br><br>
+<strong class="berlin">Municipal:</strong> Building codes require EV-ready parking<br><br>
+<strong class="berlin">Innovation:</strong> CityLAB open-data for demand-responsive planning
+</p>
 </div>
-</div>
-</div>
-<div>
-<div class="card" style="border-color:rgba(255,107,53,0.15)">
+<div class="card" style="border-color:rgba(255,107,53,0.12)">
 <div class="card-icon">🇨🇿</div>
-<div class="card-title">Prague's Regulatory Stack</div>
-<div class="card-text">
-• <strong>National:</strong> National Action Plan for Clean Mobility — targets exist but underfunded<br><br>
-• <strong>Municipal:</strong> Heritage protection overrides most infrastructure proposals in Zone 1<br><br>
-• <strong>Market:</strong> No interoperability mandate across PRE/EON/CEZ networks<br><br>
-• <strong>Adaptation:</strong> 6,000 lamppost charger target by 2030 — the primary scaling strategy
+<h3>Prague's Stack</h3>
+<p>
+<strong class="prague">National:</strong> Clean Mobility Action Plan — targets exist, underfunded<br><br>
+<strong class="prague">Municipal:</strong> Heritage protection overrides Zone 1 proposals<br><br>
+<strong class="prague">Market:</strong> No interoperability mandate across networks<br><br>
+<strong class="prague">Adaptation:</strong> 6,000 lamppost chargers by 2030
+</p>
 </div>
 </div>
+<div class="callout">
+<span class="ico">💡</span>
+<p>Prague's lamppost strategy is its best regulatory workaround — no excavation, no permanent infrastructure changes, potentially bypassing heritage objections entirely.</p>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "Berlin has a multi-level regulatory stack supporting EV deployment — federal strategy, state mobility law, municipal building codes. Prague has ambition at the national level but the municipal reality is dominated by heritage protection. The lamppost strategy is Prague's best regulatory workaround: it doesn't require excavation or permanent infrastructure changes, which means it can potentially bypass heritage objections."
-</div>
-</div>
-<div class="slide-num">06 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 7 — WORKFORCE ==================== -->
-<div class="slide" id="s7" style="background:linear-gradient(160deg,#0a0a0a,#0a1510)">
+<!-- S7 WORKFORCE -->
+<div class="slide" data-notes="(1 min): Germany's dual education system produces certified electricians at scale. Berlin has Ubitricity training installation teams. Prague has Škoda — but building EVs and installing chargers are different skills. Heritage-compliant installation requires specialized masonry skills. This is a bottleneck even if funding and permits are solved.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0a1510)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">👷 Workforce Dynamics</div>
-<h2 class="section-title">Who Builds the Network?</h2>
-<p class="section-subtitle">EV infrastructure deployment requires specialized technical labor — and both cities face different workforce realities.</p>
-<div class="two-col">
-<div>
-<div class="card" style="margin-bottom:16px">
+<div class="label label-compare">👷 Workforce Dynamics</div>
+<h2>Who Builds the Network?</h2>
+<p class="subtitle">EV deployment requires specialized labor — and both cities face different workforce realities.</p>
+<div class="grid-2">
+<div class="card">
 <div class="card-icon">🇩🇪</div>
-<div class="card-title">Berlin: Ecosystem Depth</div>
-<div class="card-text">
-• EUREF-Campus functions as a live training ground — Audi engineers, energy researchers, and EV specialists working on-site<br><br>
-• Germany's dual education system (Ausbildung) produces certified electricians at scale<br><br>
-• Ubitricity, Compleo, and other German EV-tech companies provide specialized installation workforces<br><br>
-• CityLAB cultivates data science and urban planning talent for smart grid applications
+<h3>Berlin: Ecosystem Depth</h3>
+<p>
+• EUREF as live training ground — Audi engineers, energy researchers on-site<br><br>
+• Dual education system (Ausbildung) produces certified electricians at scale<br><br>
+• Ubitricity, Compleo provide specialized installation workforces<br><br>
+• CityLAB cultivates data science + urban planning talent
+</p>
 </div>
-</div>
-</div>
-<div>
-<div class="card" style="margin-bottom:16px">
+<div class="card">
 <div class="card-icon">🇨🇿</div>
-<div class="card-title">Prague: Emerging Capacity</div>
-<div class="card-text">
-• Škoda Auto's Enyaq iV production creates a growing domestic EV manufacturing workforce<br><br>
-• However, charger installation requires different skills than vehicle manufacturing<br><br>
-• Limited specialized EV infrastructure training programs compared to Germany<br><br>
-• Heritage-compliant installation requires additional specialized skills (historic masonry, period-appropriate concealment)
+<h3>Prague: Emerging Capacity</h3>
+<p>
+• Škoda Enyaq iV production → growing EV manufacturing workforce<br><br>
+• But: charger installation ≠ vehicle manufacturing<br><br>
+• Limited specialized EV infrastructure training programs<br><br>
+• Heritage installation requires additional skills (historic masonry, concealment)
+</p>
 </div>
 </div>
+<div class="callout">
+<span class="ico">🔧</span>
+<p><strong>Key gap:</strong> Prague has auto manufacturing workforce (Škoda), but building cars ≠ installing chargers. Heritage-sensitive installation is an entirely different skill set that doesn't exist at scale.</p>
 </div>
 </div>
-<div class="insight">
-<span class="insight-icon">🔧</span>
-<span class="insight-text"><strong>Key gap:</strong> Prague has auto manufacturing workforce (Škoda), but building cars ≠ installing chargers. The city needs to grow a specialized installation and maintenance workforce, particularly for heritage-sensitive contexts.</span>
-</div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "Workforce is an underappreciated factor. Germany's dual education system produces certified electricians at scale. Berlin has companies like Ubitricity training dedicated installation teams. Prague has Škoda — but building EVs and installing chargers are different skill sets. And heritage-compliant installation requires additional specialized skills that don't exist at scale yet. This is a bottleneck that will slow deployment even if funding and permits are solved."
-</div>
-</div>
-<div class="slide-num">07 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 8 — SOCIAL: BERLIN ==================== -->
-<div class="slide" id="s8" style="background:linear-gradient(160deg,#0a0a0a,#0a1520)">
+<!-- S8 SOCIAL BERLIN -->
+<div class="slide" data-notes="(1 min): Berlin's social landscape is contradictory. E-bike culture is massive — people are comfortable with electric mobility. But excellent public transit means less urgency to own any car. Among professional drivers who do need vehicles, EVs don't pencil out yet. Supply-side success, demand-side question mark.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0a1520)"></div>
 <div class="slide-inner">
-<div class="city-badge city-berlin">🇩🇪 Social Factors</div>
-<h2 class="section-title">Berlin: E-Bike Culture,<br>EV-Curious</h2>
-<div class="two-col">
+<div class="label label-berlin">🇩🇪 Social Factors · Berlin</div>
+<h2>E-Bike Culture, EV-Curious</h2>
+<div class="grid-2">
 <div>
 <div class="card" style="margin-bottom:16px">
 <div class="card-icon">🚲</div>
-<div class="card-title">Micro-Mobility Adoption</div>
-<div class="card-text">E-bikes are ubiquitous across Berlin. The East Side Gallery corridor showed dense e-bike parking alongside pedestrians and tourists. The city has culturally embraced electric personal mobility.</div>
+<h3>Micro-Mobility Adoption</h3>
+<p>E-bikes ubiquitous. East Side Gallery: dense e-bike parking alongside tourists. Berlin has culturally embraced electric personal mobility.</p>
 </div>
 <div class="card">
 <div class="card-icon">🚇</div>
-<div class="card-title">Transit Paradox</div>
-<div class="card-text">Berlin's exceptional public transit (U-Bahn, S-Bahn, trams, buses) actually reduces urgency for private EV adoption. Why own an EV when you have a €49/month Deutschlandticket?</div>
+<h3>Transit Paradox</h3>
+<p>Exceptional public transit (U-Bahn, S-Bahn, trams) + €49/month Deutschlandticket reduces urgency for private EV ownership.</p>
 </div>
 </div>
 <div>
 <div class="card" style="margin-bottom:16px">
 <div class="card-icon">🚗</div>
-<div class="card-title">Demand-Side Gap</div>
-<div class="card-text">Despite 70K registered EVs, Uber and delivery drivers at EUREF showed little EV interest — margins are too tight. Infrastructure supply is outpacing demand among professional drivers.</div>
+<h3>Demand-Side Gap</h3>
+<p>Despite 70K EVs, Uber/delivery drivers at EUREF showed zero interest — margins too tight. Infrastructure outpacing professional demand.</p>
 </div>
-<div class="quote-block">
-<div class="quote-text">"The infrastructure is scaling, but demand-side drivers remain uneven — particularly among margin-driven ride-hail and delivery workers."</div>
-<div class="quote-source">— EUREF-Campus observation</div>
-</div>
-</div>
-</div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "Berlin's social landscape is interesting because it's contradictory. E-bike culture is massive — people are comfortable with electric mobility. But private EV adoption is complicated by excellent public transit. Why own a car at all? And among professional drivers who do need vehicles, EVs don't make economic sense yet. So Berlin has a supply-side success story but a demand-side question mark."
+<div class="quote">
+<p>"The infrastructure is scaling, but demand-side drivers remain uneven — particularly among margin-driven ride-hail and delivery workers."</p>
+<div class="src">— EUREF-Campus observation</div>
 </div>
 </div>
-<div class="slide-num">08 / 15</div>
+</div>
+</div>
 </div>
 
-<!-- ==================== SLIDE 9 — SOCIAL: PRAGUE ==================== -->
-<div class="slide" id="s9" style="background:linear-gradient(160deg,#0a0a0a,#1a0f08)">
+<!-- S9 SOCIAL PRAGUE -->
+<div class="slide" data-notes="(1 min): The Škoda moment captured this perfectly. The hotel employee — a daily driver — had zero awareness of existing charging infrastructure. Škoda IS the Czech car. It's building EVs now but the cultural association is still combustion. If people don't see themselves as EV drivers, the demand signal stays weak and the business case for new chargers stays thin.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#1a0f08)"></div>
 <div class="slide-inner">
-<div class="city-badge city-prague">🇨🇿 Social Factors</div>
-<h2 class="section-title">Prague: The Škoda Identity</h2>
-<p class="section-subtitle">Where Berlin's culture is e-bike-forward, Prague's automotive identity is deeply tied to a domestic combustion-engine brand.</p>
-<div class="two-col">
+<div class="label label-prague">🇨🇿 Social Factors · Prague</div>
+<h2>The Škoda Identity</h2>
+<div class="grid-2">
 <div>
-<div class="quote-block orange">
-<div class="quote-text">"A hotel staff member, asked about EV charging, had no idea where to find one — and pointed us to a news article about Prague's lamppost charger plan. He drives a Škoda."</div>
-<div class="quote-source">— Fieldwork interaction, Prague</div>
+<div class="quote orange">
+<p>"A hotel staff member, asked about EV charging, had no idea where to find one — and pointed us to a news article about Prague's lamppost plan. He drives a Škoda."</p>
+<div class="src">— Fieldwork interaction</div>
 </div>
 <div class="card" style="margin-top:16px">
 <div class="card-icon">🏭</div>
-<div class="card-title">Škoda's Dual Role</div>
-<div class="card-text">Škoda is Czechia's largest private employer and a source of national pride. Its Enyaq iV EV shows the brand is transitioning — but the cultural association remains combustion-first. This creates both a barrier and an opportunity.</div>
+<h3>Škoda's Dual Role</h3>
+<p>Czechia's largest private employer and national pride. Enyaq iV shows the brand is transitioning — but cultural association remains combustion-first.</p>
 </div>
 </div>
 <div>
 <div class="card" style="margin-bottom:16px">
 <div class="card-icon">📱</div>
-<div class="card-title">Awareness Gap</div>
-<div class="card-text">
-<strong>Policy level:</strong> Ambition exists (6,000 lamppost chargers by 2030).<br><br>
-<strong>Street level:</strong> Hotel staff, taxi drivers, and residents largely unaware of existing infrastructure.<br><br>
-<strong>The gap:</strong> Policy and daily life haven't connected yet.
-</div>
-</div>
-<div class="card">
-<div class="card-icon">🚇</div>
-<div class="card-title">Transit Alternative</div>
-<div class="card-text">Prague's metro + tram network is efficient and affordable. Like Berlin, strong public transit reduces the urgency for private EV ownership — but unlike Berlin, the cultural baseline is combustion, not electric.</div>
+<h3>Three Layers Exposed</h3>
+<p>
+<strong class="prague">Policy:</strong> Ambition exists — 6,000 lamppost chargers planned<br><br>
+<strong class="prague">Street:</strong> Hotel staff, taxi drivers largely unaware of infrastructure<br><br>
+<strong class="prague">Gap:</strong> Policy and daily life haven't connected yet
+</p>
 </div>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "The Škoda moment really captured this. The hotel employee — a daily driver — had zero awareness of existing charging infrastructure. Škoda IS the Czech car. It's building EVs now (Enyaq iV), but the cultural association is still combustion. This matters because consumer demand drives private investment. If people don't see themselves as EV drivers, the demand signal stays weak, and the business case for new chargers stays thin."
 </div>
-</div>
-<div class="slide-num">09 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 10 — FIELDWORK SITES ==================== -->
-<div class="slide" id="s10" style="background:linear-gradient(160deg,#0a0a0a,#0d1520)">
+<!-- S10 FIELDWORK SITES -->
+<div class="slide" data-notes="(1 min): Quick overview of our key field sites. Each visit contributed a different analytical layer — from Berlin's innovation ecosystem to Prague's lived infrastructure reality.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0d1520)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">🔬 Key Site Visits</div>
-<h2 class="section-title">What We Saw on the Ground</h2>
-<div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-<div class="card">
-<div class="card-icon">🧪</div>
-<div class="card-title">CityLAB Berlin</div>
-<div class="card-text">Public innovation lab at Tempelhof. Prototyping-first approach to civic tech. Freemove project demonstrates mobility data anonymization for demand-responsive planning.</div>
-</div>
-<div class="card">
-<div class="card-icon">⚡</div>
-<div class="card-title">EUREF-Campus</div>
-<div class="card-text">Germany's largest EV charging station. Battery 2nd-life testing with Audi. Lamppost conversions. V2G integration. CO₂-neutral energy (with nuance).</div>
-</div>
-<div class="card">
-<div class="card-icon">🧱</div>
-<div class="card-title">East Side Gallery</div>
-<div class="card-text">Dense e-bike parking, sparse EV chargers. Raised the East/West infrastructure divide hypothesis — reunification investment may not be evenly distributed.</div>
-</div>
-<div class="card">
-<div class="card-icon">🏛️</div>
-<div class="card-title">Prague Old Town</div>
-<div class="card-text">Intact medieval street grid. Charles Bridge bans vehicles entirely. Heritage protection overrides infrastructure proposals. Physical constraint is real.</div>
-</div>
-<div class="card">
-<div class="card-icon">🔌</div>
-<div class="card-title">Prague Charging (User)</div>
-<div class="card-text">Local EV driver: near-zero city-center chargers. Fragmented networks (PRE/EON/CEZ). Overstay fees. Most charging at suburban shopping centers.</div>
-</div>
-<div class="card">
-<div class="card-icon">🚗</div>
-<div class="card-title">The Škoda Encounter</div>
-<div class="card-text">Hotel staff unaware of EV charging. Drives combustion Škoda. Mentioned lamppost plan from a news article. The policy-culture gap in one interaction.</div>
+<div class="label label-compare">🔬 Fieldwork Sites</div>
+<h2>What We Saw on the Ground</h2>
+<div class="grid-3">
+<div class="card"><div class="card-icon">🧪</div><h3>CityLAB Berlin</h3><p>Public innovation lab at Tempelhof. Prototyping-first civic tech. Freemove mobility data project.</p></div>
+<div class="card"><div class="card-icon">⚡</div><h3>EUREF-Campus</h3><p>Germany's largest EV hub. Battery 2nd-life, lamppost conversions, V2G, CO₂-neutral campus.</p></div>
+<div class="card"><div class="card-icon">🧱</div><h3>East Side Gallery</h3><p>Dense e-bikes, sparse EV chargers. East/West infrastructure divide hypothesis.</p></div>
+<div class="card"><div class="card-icon">🏛️</div><h3>Prague Old Town</h3><p>Intact medieval grid. Charles Bridge bans vehicles. Heritage overrides infrastructure.</p></div>
+<div class="card"><div class="card-icon">🔌</div><h3>Prague EV User</h3><p>Near-zero center chargers. 4+ fragmented networks. Peripheral shopping center model.</p></div>
+<div class="card"><div class="card-icon">🚗</div><h3>The Škoda Moment</h3><p>Hotel staff unaware of EV charging. Drives combustion Škoda. Policy-culture gap in one interaction.</p></div>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "Quick overview of our key field sites for context. Each visit contributed a different layer to our analysis — from Berlin's innovation ecosystem to Prague's lived infrastructure reality."
-</div>
-</div>
-<div class="slide-num">10 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 11 — FULL COMPARISON ==================== -->
-<div class="slide" id="s11" style="background:linear-gradient(160deg,#0a0a0a,#0a1510)">
-<div class="bg-shape" style="width:500px;height:500px;background:#00aa88;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04"></div>
+<!-- S11 FULL COMPARISON -->
+<div class="slide" data-notes="(1 min): Summary comparison. Note the last row — key risk. Berlin's risk is supply outpacing demand. Prague's risk is the opposite: demand can't find supply. Fundamentally different scaling challenges.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0a1510)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">⚡ Full Comparison</div>
-<h2 class="section-title">Berlin vs Prague at a Glance</h2>
-<table class="compare-table">
-<thead>
-<tr><th>Dimension</th><th class="col-berlin">🇩🇪 Berlin</th><th class="col-prague">🇨🇿 Prague</th></tr>
-</thead>
+<div class="label label-compare">⚡ Full Comparison</div>
+<h2>Berlin vs Prague at a Glance</h2>
+<table>
+<thead><tr><th>Dimension</th><th class="berlin">🇩🇪 Berlin</th><th class="prague">🇨🇿 Prague</th></tr></thead>
 <tbody>
-<tr><td><strong>Economic Model</strong></td><td class="col-berlin">Investment-ready, low marginal cost</td><td class="col-prague">Cost-constrained, heritage premium</td></tr>
-<tr><td><strong>Regulatory Stance</strong></td><td class="col-berlin">Integrate → pilot → scale</td><td class="col-prague">Restrict → study → cautiously permit</td></tr>
-<tr><td><strong>Workforce</strong></td><td class="col-berlin">Deep EV-tech ecosystem + Ausbildung pipeline</td><td class="col-prague">Auto manufacturing ≠ charger installation</td></tr>
-<tr><td><strong>Social Culture</strong></td><td class="col-berlin">E-bike native, EV-curious</td><td class="col-prague">Škoda pride, combustion-attached</td></tr>
-<tr><td><strong>Charging Network</strong></td><td class="col-berlin">3,850 urban-integrated points</td><td class="col-prague">~0 center, periphery-pushed</td></tr>
-<tr><td><strong>Innovation</strong></td><td class="col-berlin">V2G, battery 2nd life, smart grid</td><td class="col-prague">Lamppost retrofit (adaptation)</td></tr>
-<tr><td><strong>Data Infrastructure</strong></td><td class="col-berlin">CityLAB open civic data</td><td class="col-prague">Not yet at scale</td></tr>
-<tr><td><strong>Key Risk</strong></td><td class="col-berlin">Supply outpacing demand</td><td class="col-prague">Demand can't find supply</td></tr>
+<tr><td><strong>Economic</strong></td><td class="berlin">Investment-ready, low marginal cost</td><td class="prague">Cost-constrained, heritage premium</td></tr>
+<tr><td><strong>Regulatory</strong></td><td class="berlin">Integrate → pilot → scale</td><td class="prague">Restrict → study → permit</td></tr>
+<tr><td><strong>Workforce</strong></td><td class="berlin">Deep EV-tech ecosystem</td><td class="prague">Auto mfg ≠ charger installation</td></tr>
+<tr><td><strong>Social</strong></td><td class="berlin">E-bike native, EV-curious</td><td class="prague">Škoda pride, combustion-attached</td></tr>
+<tr><td><strong>Network</strong></td><td class="berlin">3,850 urban-integrated</td><td class="prague">~0 center, periphery-pushed</td></tr>
+<tr><td><strong>Innovation</strong></td><td class="berlin">V2G, battery 2nd life, smart grid</td><td class="prague">Lamppost retrofit (adaptation)</td></tr>
+<tr><td><strong>Key Risk</strong></td><td class="berlin">Supply outpacing demand</td><td class="prague">Demand can't find supply</td></tr>
 </tbody>
 </table>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "This is the summary view. Note the last row — 'key risk.' Berlin's risk is that they're building infrastructure faster than demand materializes. Prague's risk is the opposite: even people who want EVs can't reliably charge them. These are fundamentally different scaling challenges."
 </div>
-</div>
-<div class="slide-num">11 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 12 — STRATEGIC INSIGHTS ==================== -->
-<div class="slide" id="s12" style="background:linear-gradient(160deg,#0a0a0a,#15120a)">
-<div class="bg-shape" style="width:400px;height:400px;background:#ddaa00;bottom:-100px;left:-100px;opacity:0.05"></div>
+<!-- S12 STRATEGIC FINDINGS -->
+<div class="slide" data-notes="(2 min): Three core findings. First: infrastructure alone doesn't drive adoption — Berlin shows this. Second: Prague's constraints are generating innovative solutions. Third and most important: the fundamental difference is governance culture. Berlin experiments, Prague restricts. Changing institutional culture is harder than installing chargers.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#15120a)"></div>
+<div class="bg-shape" style="width:400px;height:400px;background:#ddaa00;bottom:-20%;left:-10%;opacity:0.04"></div>
 <div class="slide-inner">
-<div class="city-badge city-strategy">🎯 Strategic Insights</div>
-<h2 class="section-title">Three Core Findings</h2>
-<div class="card-grid" style="grid-template-columns:1fr">
-<div class="card" style="border-left:3px solid #4da6ff">
-<div class="card-title">1. Infrastructure ≠ Adoption</div>
-<div class="card-text">Berlin proves that building chargers doesn't automatically drive EV adoption. Uber drivers at EUREF-Campus showed zero interest despite world-class infrastructure meters away. The demand side requires its own strategy: subsidies, fleet mandates, total-cost-of-ownership education. <strong style="color:#4da6ff">Supply without demand creates expensive ghost infrastructure.</strong></div>
+<div class="label label-strategy">🎯 Strategic Insights</div>
+<h2>Three Core Findings</h2>
+<div class="finding" style="border-color:#4da6ff">
+<h3>1. Infrastructure ≠ Adoption</h3>
+<p>Berlin proves that building chargers doesn't automatically drive EV adoption. Uber drivers at EUREF showed zero interest despite world-class infrastructure meters away. <strong class="berlin">Supply without demand creates expensive ghost infrastructure.</strong></p>
 </div>
-<div class="card" style="border-left:3px solid #ff8c5a">
-<div class="card-title">2. Constraint Breeds Innovation (Sometimes)</div>
-<div class="card-text">Prague's lamppost conversion strategy emerged precisely because conventional deployment is blocked by heritage rules. This constraint-driven innovation could leapfrog traditional station-based models — if executed at scale. <strong style="color:#ff8c5a">The 6,000 lamppost target by 2030 is Prague's most viable path forward.</strong></div>
+<div class="finding" style="border-color:#ff8c5a">
+<h3>2. Constraint Breeds Innovation</h3>
+<p>Prague's lamppost strategy emerged because conventional deployment is blocked. This constraint-driven innovation could leapfrog station-based models. <strong class="prague">The 6,000 lamppost target is Prague's most viable path.</strong></p>
 </div>
-<div class="card" style="border-left:3px solid #00d4aa">
-<div class="card-title">3. The Gap Is Governance, Not Geography</div>
-<div class="card-text">The Berlin-Prague divide isn't primarily about wealth or technology — it's about institutional culture. Berlin's government experiments and iterates (CityLAB). Prague's government restricts and studies. This governance gap shapes everything downstream: what gets funded, what gets permitted, and what gets built. <strong style="color:#00d4aa">Changing institutional culture is harder than installing chargers.</strong></div>
-</div>
-</div>
-<div class="speaker-notes">
-<strong>(2 min):</strong> "Three core findings. First: infrastructure alone doesn't drive adoption — Berlin shows this clearly. Second: Prague's constraints are actually generating innovative solutions — the lamppost model could leapfrog traditional deployment. Third, and most important: the fundamental difference between these cities isn't money or technology. It's how their institutions respond to change. Berlin experiments. Prague restricts. Until Prague's governance culture shifts, even good policy will struggle to translate into deployed infrastructure."
+<div class="finding" style="border-color:#00d4aa">
+<h3>3. The Gap Is Governance, Not Geography</h3>
+<p>The divide isn't wealth or technology — it's institutional culture. Berlin experiments and iterates. Prague restricts and studies. <strong class="green">Changing institutional culture is harder than installing chargers.</strong></p>
 </div>
 </div>
-<div class="slide-num">12 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 13 — RECOMMENDATIONS ==================== -->
-<div class="slide" id="s13" style="background:linear-gradient(160deg,#0a0a0a,#15120a)">
+<!-- S13 RECOMMENDATIONS -->
+<div class="slide" data-notes="(2 min): Four recommendations. Berlin: stop building, start selling — demand-side activation. Prague: lamppost model is your bet, but need network interoperability and a cultural shift leveraging Škoda's EV transition. Both: use EU AFIR as a forcing function to overcome resistance.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#15120a)"></div>
 <div class="slide-inner">
-<div class="city-badge city-strategy">💡 Recommendations</div>
-<h2 class="section-title">Strategic Implications</h2>
-<p class="section-subtitle">What each city should prioritize based on our analysis.</p>
-<div class="rec-grid">
+<div class="label label-strategy">💡 Recommendations</div>
+<h2>Strategic Implications</h2>
+<div class="grid-2">
 <div class="rec">
-<div class="rec-label berlin">For Berlin</div>
-<div class="rec-title">Close the Demand Gap</div>
-<div class="rec-text">Shift focus from infrastructure build-out to demand-side activation. Fleet electrification mandates for ride-hail and delivery. Expand total-cost-of-ownership tools for gig workers. Address the East/West deployment imbalance.</div>
-</div>
-<div class="rec">
-<div class="rec-label prague">For Prague</div>
-<div class="rec-title">Accelerate Lamppost Deployment</div>
-<div class="rec-text">Double down on the lamppost conversion strategy — it's Prague's only heritage-compatible path at scale. Mandate interoperability across PRE/EON/CEZ networks via a unified payment standard. Create a "Prague CityLAB" equivalent for mobility data.</div>
+<div class="rec-for berlin">For Berlin</div>
+<h3>Close the Demand Gap</h3>
+<p>Fleet electrification mandates for ride-hail/delivery. TCO education for gig workers. Address East/West deployment imbalance.</p>
 </div>
 <div class="rec">
-<div class="rec-label prague">For Prague</div>
-<div class="rec-title">Leverage Škoda's Transition</div>
-<div class="rec-text">Partner with Škoda's Enyaq iV marketing to shift cultural association from combustion to electric. Use national pride as a vector for EV adoption — "drive Czech, drive electric." Bundle charger installation with Enyaq purchases.</div>
+<div class="rec-for prague">For Prague</div>
+<h3>Accelerate Lampposts</h3>
+<p>Double down on lamppost conversion — only heritage-compatible path at scale. Mandate interoperability across PRE/EON/CEZ. Create a Prague CityLAB equivalent.</p>
 </div>
 <div class="rec">
-<div class="rec-label both">For Both</div>
-<div class="rec-title">Adopt EU AFIR as a Floor, Not a Ceiling</div>
-<div class="rec-text">EU mandates set minimum charging density targets. Both cities should exceed these to build consumer confidence. Berlin should use AFIR compliance to address East/West gaps. Prague should use AFIR deadlines to overcome institutional inertia.</div>
+<div class="rec-for prague">For Prague</div>
+<h3>Leverage Škoda's Transition</h3>
+<p>Partner with Škoda Enyaq iV marketing. Use national pride as adoption vector: "Drive Czech, drive electric." Bundle charger installation with purchases.</p>
+</div>
+<div class="rec">
+<div class="rec-for green">For Both</div>
+<h3>AFIR as Floor, Not Ceiling</h3>
+<p>Exceed EU minimums to build consumer confidence. Berlin: use AFIR for East/West gaps. Prague: use deadlines to overcome institutional inertia.</p>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(2 min):</strong> "Four recommendations. For Berlin: stop building and start selling — demand-side activation is the priority. For Prague: the lamppost model is your best bet, but you need network interoperability and a cultural shift leveraging Škoda's own EV transition. For both: use EU AFIR as a forcing function to overcome internal resistance and geographic imbalances."
 </div>
-</div>
-<div class="slide-num">13 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 14 — WHAT'S NEXT ==================== -->
-<div class="slide" id="s14" style="background:linear-gradient(160deg,#0a0a0a,#0d1b2a)">
+<!-- S14 NEXT STEPS -->
+<div class="slide" data-notes="(1 min): For the final paper, we'll add quantitative data, deeper Škoda factory analysis, spatial mapping of charger distribution, and expanded recommendations with implementation timelines. We welcome feedback on priorities.">
+<div class="bg-gradient" style="background:linear-gradient(160deg,#0a0a0a,#0d1b2a)"></div>
 <div class="slide-inner">
-<div class="city-badge city-compare">🔮 Looking Ahead</div>
-<h2 class="section-title">From Presentation to Paper</h2>
-<p class="section-subtitle">Areas we plan to deepen in the final written analysis.</p>
-<div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-<div class="card">
-<div class="card-icon">📊</div>
-<div class="card-title">Quantitative Data</div>
-<div class="card-text">Charger density per capita, installation cost comparisons, adoption curves, and EU AFIR compliance gap analysis for both cities.</div>
-</div>
-<div class="card">
-<div class="card-icon">🏭</div>
-<div class="card-title">Škoda Factory Analysis</div>
-<div class="card-text">Deeper investigation into Škoda's Mladá Boleslav operations, Enyaq iV production ramp, and implications for Czech EV workforce development.</div>
-</div>
-<div class="card">
-<div class="card-icon">🗺️</div>
-<div class="card-title">Spatial Mapping</div>
-<div class="card-text">GIS analysis of charger distribution patterns — testing the East/West Berlin hypothesis and Prague's center-periphery concentration quantitatively.</div>
-</div>
-<div class="card">
-<div class="card-icon">📝</div>
-<div class="card-title">Policy Recommendations</div>
-<div class="card-text">Expanded strategic framework with implementation timelines, stakeholder mapping, and feasibility assessment for each recommendation.</div>
+<div class="label label-compare">🔮 Next Steps</div>
+<h2>From Presentation to Paper</h2>
+<p class="subtitle">Areas we'll deepen in the final written analysis.</p>
+<div class="grid-4">
+<div class="card"><div class="card-icon">📊</div><h3>Quantitative Data</h3><p>Charger density per capita, installation costs, adoption curves, AFIR compliance gaps.</p></div>
+<div class="card"><div class="card-icon">🏭</div><h3>Škoda Deep Dive</h3><p>Mladá Boleslav operations, Enyaq ramp, workforce development implications.</p></div>
+<div class="card"><div class="card-icon">🗺️</div><h3>Spatial Mapping</h3><p>GIS analysis testing East/West Berlin and Prague center-periphery hypotheses.</p></div>
+<div class="card"><div class="card-icon">📝</div><h3>Implementation</h3><p>Timelines, stakeholder mapping, feasibility assessment for each recommendation.</p></div>
 </div>
 </div>
-<div class="speaker-notes">
-<strong>(1 min):</strong> "For the final paper, we'll add quantitative data on charger density and costs, do a deeper Škoda factory analysis, attempt spatial mapping of charger distribution, and expand our recommendations with implementation detail. We welcome feedback on which areas to prioritize."
-</div>
-</div>
-<div class="slide-num">14 / 15</div>
 </div>
 
-<!-- ==================== SLIDE 15 — CLOSING ==================== -->
-<div class="slide" id="s15" style="background:linear-gradient(135deg,#0a0a0a 0%,#0d1b2a 50%,#1b2a3d 100%)">
+<!-- S15 CLOSING -->
+<div class="slide" data-notes="Closing (30 sec): The EV infrastructure gap isn't about money or technology — it's governance culture. Berlin experiments, Prague restricts. But Prague's lamppost strategy shows constraint can breed innovation. The question is whether institutional culture shifts fast enough for EU mandates and consumer expectations. We'd love your questions.">
+<div class="bg-gradient" style="background:linear-gradient(135deg,#0a0a0a,#0d1b2a 60%,#1b2a3d)"></div>
 <div class="bg-shape" style="width:600px;height:600px;background:#00d4aa;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04"></div>
 <div class="slide-inner" style="text-align:center">
-<h2 class="section-title" style="font-size:clamp(2rem,4vw,3.5rem);margin-bottom:20px">Questions &<br>Discussion</h2>
-<p class="section-subtitle" style="margin:0 auto 40px;text-align:center;max-width:600px">The gap between Berlin and Prague isn't chargers — it's how institutions respond to change. One experiments. The other restricts. The EV transition will be shaped by which model prevails.</p>
-<div class="stats-row" style="max-width:700px;margin:0 auto">
-<div class="stat"><div class="stat-value berlin">🇩🇪</div><div class="stat-label">Build & Iterate</div></div>
-<div class="stat"><div class="stat-value" style="color:#fff">vs</div><div class="stat-label">&nbsp;</div></div>
-<div class="stat"><div class="stat-value prague">🇨🇿</div><div class="stat-label">Adapt & Navigate</div></div>
-</div>
-<div class="speaker-notes">
-<strong>Closing (30 sec):</strong> "To close: the EV infrastructure gap between these cities isn't fundamentally about money or technology. It's about governance culture. Berlin experiments, Prague restricts. But Prague's lamppost strategy shows that constraint can breed innovation. The question is whether institutional culture can shift fast enough to meet EU mandates and consumer expectations. We'd love your questions and feedback."
+<div class="closing-title" style="background:linear-gradient(135deg,#fff,#b0c4de);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Questions &<br>Discussion</div>
+<p class="closing-sub">The gap isn't chargers — it's how institutions respond to change.<br>One experiments. The other restricts.<br>The EV transition depends on which model prevails.</p>
+<div class="stats" style="max-width:500px;margin:32px auto 0">
+<div class="stat"><div class="val berlin" style="font-size:2rem">🇩🇪</div><div class="lbl">Build & Iterate</div></div>
+<div class="stat" style="border:none;background:none"><div class="val" style="color:#3a4a5e;font-size:1.5rem">vs</div><div class="lbl">&nbsp;</div></div>
+<div class="stat"><div class="val prague" style="font-size:2rem">🇨🇿</div><div class="lbl">Adapt & Navigate</div></div>
 </div>
 </div>
-<div class="slide-num">15 / 15</div>
 </div>
 
+</div><!-- /deck -->
+
 <script>
-const slides=document.querySelectorAll('.slide');
-const navDots=document.getElementById('navDots');
-slides.forEach((s,i)=>{const a=document.createElement('a');a.href='#s'+(i+1);if(i===0)a.classList.add('active');navDots.appendChild(a)});
-const progress=document.getElementById('progress');
-window.addEventListener('scroll',()=>{const t=window.scrollY;const h=document.documentElement.scrollHeight-window.innerHeight;progress.style.width=(t/h)*100+'%';const dots=navDots.querySelectorAll('a');let c=0;slides.forEach((s,i)=>{if(t>=s.offsetTop-window.innerHeight/2)c=i});dots.forEach((d,i)=>d.classList.toggle('active',i===c))});
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const counter = document.getElementById('counter');
+const bar = document.getElementById('progressBar');
+const notesPanel = document.getElementById('notesPanel');
+
+function showSlide(n) {
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+    if (i === n) s.classList.add('active');
+    else if (i < n) s.classList.add('prev');
+  });
+  current = n;
+  counter.textContent = String(n + 1).padStart(2, '0') + ' / ' + total;
+  bar.style.width = ((n + 1) / total * 100) + '%';
+  // Update notes
+  const note = slides[n].dataset.notes || '';
+  notesPanel.innerHTML = '<p>' + note + '</p>';
+}
+
+function next() { if (current < total - 1) showSlide(current + 1); }
+function prev() { if (current > 0) showSlide(current - 1); }
+
+function toggleNotes() {
+  notesPanel.classList.toggle('open');
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+  if (e.key === 'n' || e.key === 'N') toggleNotes();
+  if (e.key === 'Home') { e.preventDefault(); showSlide(0); }
+  if (e.key === 'End') { e.preventDefault(); showSlide(total - 1); }
+});
+
+// Touch swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+});
+
+// Click left/right halves
+document.querySelector('.deck').addEventListener('click', e => {
+  if (e.target.closest('a, button, .notes-panel, .nav-arrows, .notes-toggle')) return;
+  if (e.clientX > window.innerWidth * 0.6) next();
+  else if (e.clientX < window.innerWidth * 0.4) prev();
+});
+
+showSlide(0);
 </script>
 </body>
 </html>
